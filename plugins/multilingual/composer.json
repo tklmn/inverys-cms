@@ -1,0 +1,20 @@
+{
+    "name": "inverys/multilingual",
+    "description": "Multilingual content for Inverys CMS: pages, blog, menus, forms, gallery and theme texts.",
+    "type": "inverys-plugin",
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        { "name": "Tom Kilimann", "email": "tkilimann@icloud.com" }
+    ],
+    "extra": {
+        "inverys": {
+            "slug": "multilingual"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\Multilingual\\": "src/"
+        }
+    }
+}

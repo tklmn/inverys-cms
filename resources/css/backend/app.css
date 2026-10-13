@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+
+/* Sources Tailwind does not find on its own */
+@source '../../../storage/framework/views/*.php';
+/* Themes and plugins from their own repos (admin views) — see vite.config.js */
+@import '../sources.generated.css';
+@source '../../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+/* Classes that only come into being at runtime from the DB/config */
+@source inline('md:col-span-{1,2}');
+@source inline('md:grid-cols-{2,3,4}');
+
+@plugin '@tailwindcss/forms';
+
+/* Dark mode hangs off the .dark class on <html> (ThemeHelper) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@import '../tokens.css';
+
+/*
+ * Font sizes one step larger than Tailwind's default, for the backend only
+ * (14 -> 15 px, 12 -> 13 px). The tokens live here and not in tokens.css,
+ * because the frontend also loads tokens.css and should keep its
+ * typography.
+ */
+@theme {
+    --text-xs: 0.8125rem;
+    --text-xs--line-height: 1.125rem;
+    --text-sm: 0.9375rem;
+    --text-sm--line-height: 1.375rem;
+}
+@import './base.css';
+
+@import './components/button.css' layer(components);
+@import './components/form.css' layer(components);
+@import './components/feedback.css' layer(components);
+@import './components/surface.css' layer(components);
+@import './components/data-list.css' layer(components);
+@import './components/sidebar.css' layer(components);
+@import './components/header.css' layer(components);
+@import './components/page-tree.css' layer(components);
+@import './components/page-builder.css' layer(components);
+@import './components/editor.css' layer(components);
+@import './components/dashboard.css' layer(components);
+@import './components/auth.css' layer(components);

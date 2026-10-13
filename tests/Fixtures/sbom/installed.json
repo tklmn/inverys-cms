@@ -1,0 +1,58 @@
+{
+    "packages": [
+        {
+            "name": "monolog/monolog",
+            "version": "v3.9.0",
+            "type": "library",
+            "license": ["MIT"],
+            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
+            "homepage": "https://github.com/Seldaek/monolog",
+            "authors": [{"name": "Jordi Boggiano", "email": "j.boggiano@seld.be"}],
+            "source": {"type": "git", "url": "https://github.com/Seldaek/monolog.git", "reference": "10d85740180ecba7896c87e06a166e0c95a0e3b6"},
+            "dist": {"type": "zip", "url": "https://api.github.com/repos/Seldaek/monolog/zipball/10d85740180ecba7896c87e06a166e0c95a0e3b6", "shasum": ""},
+            "require": {"php": ">=8.1", "ext-json": "*", "psr/log": "^2.0 || ^3.0"}
+        },
+        {
+            "name": "psr/log",
+            "version": "3.0.2",
+            "type": "library",
+            "license": ["MIT"],
+            "description": "Common interface for logging libraries",
+            "source": {"type": "git", "url": "https://github.com/php-fig/log.git", "reference": "f16e1d5863e37f8d8c2a01719f5b34baa2b714d3"},
+            "require": {"php": ">=8.0.0"}
+        },
+        {
+            "name": "nette/utils",
+            "version": "v4.0.8",
+            "type": "library",
+            "license": ["BSD-3-Clause", "GPL-2.0-only", "GPL-3.0-only"],
+            "support": {"source": "https://github.com/nette/utils/tree/v4.0.8"},
+            "require": {"php": "8.0 - 8.5"}
+        },
+        {
+            "name": "symfony/polyfill-mbstring",
+            "version": "v1.33.0",
+            "type": "library",
+            "license": ["MIT"],
+            "require": {"php": ">=7.2"},
+            "replace": {"symfony/polyfill-mb": "*"}
+        },
+        {
+            "name": "acme/fixture-plugin",
+            "version": "2.1.0",
+            "type": "inverys-plugin",
+            "license": "GPL-2.0-or-later OR MIT",
+            "extra": {"inverys": {"slug": "fixture-plugin"}},
+            "require": {"symfony/polyfill-mb": "^1.0"}
+        },
+        {
+            "name": "phpunit/phpunit",
+            "version": "12.3.0",
+            "type": "library",
+            "license": ["BSD-3-Clause"],
+            "require": {"psr/log": "^3.0"}
+        }
+    ],
+    "dev": true,
+    "dev-package-names": ["phpunit/phpunit"]
+}

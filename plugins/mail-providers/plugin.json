@@ -1,0 +1,12 @@
+{
+    "slug": "mail-providers",
+    "name": "Mail Providers",
+    "version": "1.0.0",
+    "screenshot": "assets/screenshot.png",
+    "description": "Extended mail transport support: SMTP, Microsoft 365 (Graph, OAuth2) and Google / Gmail (API, OAuth2).",
+    "author": "Tom Kilimann",
+    "provider": "Plugins\\MailProviders\\MailProvidersServiceProvider",
+    "settings_route": "backend.mail-providers.settings",
+    "search_keywords": "mail-providers::mail-providers.search_keywords",
+    "is_system": true
+}

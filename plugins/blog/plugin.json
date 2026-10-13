@@ -1,0 +1,12 @@
+{
+    "slug": "blog",
+    "name": "Blog",
+    "version": "1.0.0",
+    "screenshot": "assets/screenshot.png",
+    "description": "Full-featured blog with posts, categories, RSS feed, and admin management.",
+    "author": "Tom Kilimann",
+    "provider": "Plugins\\Blog\\BlogServiceProvider",
+    "settings_route": "backend.blog.settings",
+    "search_keywords": "blog::blog.search_keywords",
+    "is_system": true
+}

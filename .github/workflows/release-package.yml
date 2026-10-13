@@ -1,0 +1,77 @@
+name: Release package
+
+# Builds the complete update package of a release — with vendor/ (no dev
+# dependencies) and the built front-end assets — and attaches it to the
+# GitHub release as inverys-cms-<version>.zip plus its SHA-256 checksum.
+# System → Updates installs exactly this file; the plain source archive
+# cannot run without Composer and a build.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to build the package for (e.g. 1.0.0)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: Build update package
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: gd, pdo_sqlite, sqlite3, mbstring, openssl, dom, fileinfo, tokenizer, ctype, json, curl
+          coverage: none
+
+      - name: Configure Composer GitHub token (avoids API rate limits)
+        run: composer config -g github-oauth.github.com "${{ github.token }}"
+
+      - name: Install Composer dependencies (production)
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --no-progress
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Build front-end assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build the package
+        run: |
+          VERSION="${TAG#v}"
+          PHP_MIN=$(php -r '$c = json_decode(file_get_contents("composer.json"), true); preg_match("/\d+\.\d+/", $c["require"]["php"] ?? "8.4", $m); echo $m[0];')
+          # Package manifest: System → Updates checks name, version and PHP before installing.
+          # The commit of the checked-out tag — GITHUB_SHA stays that of the first run on a re-run
+          printf '{"name":"inverys-cms","version":"%s","php":"%s","commit":"%s"}\n' "$VERSION" "$PHP_MIN" "$(git rev-parse HEAD)" > cms-package.json
+          OUT="inverys-cms-${VERSION}.zip"
+          # Drop runtime files; the folders themselves (with their .gitignore) stay in the package:
+          # without storage/framework/sessions the installer already fails on the session
+          find storage/logs storage/framework/cache/data storage/framework/sessions storage/framework/views \
+            -type f ! -name .gitignore -delete
+          zip -r -q -X "$OUT" . \
+            -x '.git/*' '.github/*' 'node_modules/*' 'tests/*' '.env' '.env.backup' '.env.*.backup' '*.zip'
+          sha256sum "$OUT" > "$OUT.sha256"
+          echo "OUT=$OUT" >> "$GITHUB_ENV"
+          ls -la "$OUT" "$OUT.sha256"
+
+      - name: Attach to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$TAG" "$OUT" "$OUT.sha256" --clobber

@@ -1,0 +1,19 @@
+# Protection for installations where the web server points at the project directory
+# instead of public/ (e.g. shared hosting or http://host/inverys-cms/public).
+# Without this file, .env (APP_KEY, DB credentials), storage/logs, composer.json
+# etc. would be directly accessible. Only public/ is served — its .htaccess applies there.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^public(/|$) - [L]
+    # Request for the project folder itself → to the website
+    RewriteRule ^$ %{REQUEST_URI}public/ [R=302,L]
+    RewriteRule ^ - [F]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    <IfModule mod_authz_core.c>
+        <FilesMatch "^\.|\.(env|log|json|lock|php|sqlite|key|md|xml|yml|yaml)$">
+            Require all denied
+        </FilesMatch>
+    </IfModule>
+</IfModule>

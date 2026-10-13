@@ -1,0 +1,57 @@
+@import 'tailwindcss';
+
+/* Themes and plugins from Composer (vendor/inverys/*) — vendor/ is in .gitignore
+   and is therefore not scanned for classes automatically */
+@source '../../../vendor/inverys';
+
+/* Themes and plugins from their own repos — one @source per folder (vite.config.js) */
+@import '../sources.generated.css';
+
+/* Body text from editors (text block, text pages, blog): headings, lists, spacing.
+   Colors come from .site-prose (site.css) */
+@plugin '@tailwindcss/typography';
+
+/* Website font — self-hosted (no request to Google, GDPR-friendly) */
+@import '@fontsource-variable/inter';
+/* Outfit (theme setting "Font"): only loaded when a theme selects it */
+@import '@fontsource-variable/outfit';
+
+/* Dark mode hinges on the .dark class on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * The same design tokens as in the backend.
+ *
+ * Needed because some views are rendered in both worlds: /profile runs
+ * in the frontend theme, /backend/profile in the backend layout — both show
+ * the same Blade file. Without shared tokens, half of the classes would be
+ * undefined there. The frontend components below remain untouched.
+ */
+@import '../tokens.css';
+
+/* The website uses Inter; the backend sticks with the system font */
+@theme {
+    --font-sans:
+        'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+        sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+}
+
+/*
+ * Lucide icons (App\Support\Icon) — inline instead of block, as in the backend.
+ * Inside a layer, otherwise the rule wins against every utility (hidden, sr-only …).
+ */
+@layer components {
+    .ui-icon {
+        display: inline-block;
+        flex: none;
+        vertical-align: -0.125em;
+    }
+}
+
+@import './components/site.css' layer(components);
+@import './components/site-design.css' layer(components);
+@import './components/buttons.css' layer(utilities);
+@import './components/navigation.css' layer(utilities);
+@import './components/forms.css' layer(utilities);
+@import './components/blocks.css' layer(utilities);
+@import './components/site-overrides.css' layer(utilities);

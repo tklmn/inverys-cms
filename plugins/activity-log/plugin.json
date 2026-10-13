@@ -1,0 +1,12 @@
+{
+    "slug": "activity-log",
+    "name": "Activity Log",
+    "version": "1.0.0",
+    "screenshot": "assets/screenshot.png",
+    "description": "Tracks all user actions with field-level change diffs, auth event logging, and automatic cleanup.",
+    "author": "Tom Kilimann",
+    "provider": "Plugins\\ActivityLog\\ActivityLogServiceProvider",
+    "settings_route": "backend.activity-log.settings.edit",
+    "search_keywords": "activity-log::activity.search_keywords",
+    "is_system": true
+}

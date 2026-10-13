@@ -1,0 +1,750 @@
+/*
+ * Surfaces and page scaffolding.
+ *
+ * One radius step, one line colour, no shadows on resting surfaces.
+ * Depth comes from surface contrast, not from drop shadows.
+ */
+
+/* ── Page header ─────────────────────────────────────────────── */
+.ui-page {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.ui-page-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+}
+
+.ui-page-title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--fg);
+}
+
+.ui-page-lead {
+    margin-top: 0.125rem;
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+}
+
+.ui-page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ── Card ────────────────────────────────────────────────────── */
+.ui-card {
+    background-color: var(--surface);
+    /* In the dark a light edge + shadow for depth, in light mode almost nothing */
+    background-image: var(--card-sheen);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--card-shadow);
+}
+
+.ui-card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+/* Title grows from 10rem: the header only wraps when less than that is left
+   next to the actions. Sized to content, a "View details" slid onto its own
+   line below even with a medium-length title. */
+.ui-card-title {
+    flex: 1 1 10rem;
+    min-width: 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--fg);
+}
+
+.ui-card-body { padding: 1rem; }
+
+.ui-card-body-flush { padding: 0; }
+
+.ui-card-foot {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--line);
+    background-color: var(--surface-sunken);
+    border-end-start-radius: var(--radius-xl);
+    border-end-end-radius: var(--radius-xl);
+}
+
+/* Clickable card — replaces the old "View all" footer */
+.ui-card-link {
+    display: block;
+    transition:
+        border-color 0.12s ease,
+        background-color 0.12s ease;
+}
+.ui-card-link:hover {
+    border-color: var(--accent-line);
+    background-color: var(--surface-hover);
+    box-shadow: var(--card-shadow), 0 0 0 3px color-mix(in oklab, var(--accent) 10%, transparent);
+}
+
+/* ── Toolbar above lists ─────────────────────────────────────── */
+.ui-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.ui-toolbar-spacer { margin-inline-start: auto; }
+
+/* ── Metric ──────────────────────────────────────────────────── */
+.ui-stat {
+    position: relative;
+    overflow: hidden;
+    padding: 1rem 1.125rem;
+}
+
+/* Coloured glow top right in the metric's chip colour (--tone comes
+   from .ui-tone-*); clear in the dark, just a hint in light mode */
+.ui-stat::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(14rem 9rem at 100% 0%, color-mix(in oklab, var(--tone, var(--accent)) var(--stat-glow, 7%), transparent), transparent 70%);
+    pointer-events: none;
+}
+
+.dark .ui-stat { --stat-glow: 20%; }
+
+.ui-stat > * { position: relative; }
+
+.ui-tone-accent { --tone: var(--accent); }
+.ui-tone-positive { --tone: var(--positive); }
+.ui-tone-caution { --tone: var(--caution); }
+.ui-tone-critical { --tone: var(--critical); }
+.ui-tone-violet { --tone: var(--violet); }
+.ui-tone-teal { --tone: var(--teal); }
+
+.ui-stat-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.ui-stat-label {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--fg-muted);
+}
+
+.ui-stat-value {
+    display: block;
+    margin-top: 0.125rem;
+    font-size: var(--text-3xl);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg);
+}
+
+.ui-stat-delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.375rem;
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+}
+
+.ui-stat-delta-up { color: var(--positive); }
+.ui-stat-delta-down { color: var(--critical); }
+
+/* ── Empty state ─────────────────────────────────────────────── */
+.ui-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+.ui-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--radius-xl);
+    background-color: var(--surface-sunken);
+    color: var(--fg-subtle);
+    font-size: 1.25rem;
+}
+
+.ui-empty-title {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--fg);
+}
+
+.ui-empty-text {
+    max-width: 32rem;
+    font-size: var(--text-sm);
+    color: var(--fg-muted);
+}
+
+/* Empty state over a canvas (theme editor), below the toolbar */
+.ui-editor-empty {
+    position: absolute;
+    inset: 2.75rem 0 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem 1.5rem;
+    background-color: var(--surface);
+    text-align: center;
+}
+
+.ui-editor-empty[hidden] { display: none; }
+
+/* ── Log view (backend/logs/show) ────────────────────────────── */
+.ui-log {
+    max-height: 70vh;
+    overflow: auto;
+    margin: 0;
+    padding: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    color: var(--fg-muted);
+    tab-size: 4;
+}
+
+/* Header line of an entry: bold and in the level's colour */
+.ui-log-head { font-weight: 600; color: var(--fg); }
+.ui-log-emergency, .ui-log-alert, .ui-log-critical, .ui-log-error { color: var(--critical); }
+.ui-log-warning { color: var(--caution); }
+.ui-log-notice, .ui-log-info { color: var(--accent); }
+
+/* ── Section divider in long forms ───────────────────────────── */
+.ui-section-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+}
+
+/* ── Tabs ────────────────────────────────────────────────────── */
+.ui-tabs {
+    display: flex;
+    /* One line, swipeable sideways on narrow screens */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    gap: 0.25rem;
+    padding: 0.375rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.ui-tabs::-webkit-scrollbar { display: none; }
+
+/* Edge fades out where tabs are still hidden (data-overflow from
+   ui/tabs-scroll.js) — at every width, not only on phones */
+.ui-tabs[data-overflow='end'] { mask-image: linear-gradient(90deg, black calc(100% - 3rem), transparent); }
+.ui-tabs[data-overflow='start'] { mask-image: linear-gradient(90deg, transparent, black 3rem); }
+.ui-tabs[data-overflow='start end'] { mask-image: linear-gradient(90deg, transparent, black 3rem, black calc(100% - 3rem), transparent); }
+
+.ui-tab {
+    flex: none;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4375rem;
+    height: 1.875rem;
+    padding-inline: 0.625rem;
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--fg-muted);
+    cursor: pointer;
+    transition:
+        background-color 0.12s ease,
+        color 0.12s ease;
+}
+
+.ui-tab:hover {
+    background-color: var(--surface-hover);
+    color: var(--fg);
+}
+
+.ui-tab[aria-selected='true'] {
+    background-color: var(--surface-active);
+    color: var(--fg);
+}
+
+/* Tab without content: visible, but toned down (trash) */
+.ui-tab-muted:not([aria-selected='true']) { color: var(--fg-subtle); }
+
+.ui-tab-count {
+    min-width: 1.25rem;
+    padding-inline: 0.3125rem;
+    border-radius: 9999px;
+    background-color: var(--surface-sunken);
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}
+
+.ui-tab[aria-selected='true'] .ui-tab-count {
+    background-color: var(--accent-soft);
+    color: var(--accent);
+}
+
+/* ── Tile grid ───────────────────────────────────────────────── */
+
+/*
+ * For overviews made of preview images (media, themes, block picker).
+ *
+ * Deliberately auto-fill instead of a fixed column count per breakpoint: the grid
+ * follows the width actually available. A collapsed navigation, the detail
+ * panel or a second monitor thus change the column count on their own,
+ * without a breakpoint list having to be maintained anywhere.
+ */
+.ui-tiles {
+    display: grid;
+    /* 9rem: two tiles side by side on phones instead of one long column */
+    grid-template-columns: repeat(auto-fill, minmax(min(9rem, 100%), 1fr));
+    gap: 0.75rem;
+    padding: 0.75rem;
+}
+
+.ui-tile {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+    transition: border-color 120ms ease;
+}
+
+.ui-tile:hover,
+.ui-tile:focus-within { border-color: var(--accent-line); }
+
+.ui-tile-preview {
+    display: flex;
+    aspect-ratio: 4 / 3;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface-sunken);
+    color: var(--fg-subtle);
+    font-size: 1.75rem;
+}
+
+.ui-tile-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Show graphics whole, on a light checkerboard — in dark mode too, otherwise
+   dark logos disappear on a dark background */
+.ui-tile-preview:has(img.is-contain),
+.ui-media-stage {
+    background-color: #f1f3f7;
+    background-image:
+        linear-gradient(45deg, #e3e7ee 25%, transparent 25%, transparent 75%, #e3e7ee 75%),
+        linear-gradient(45deg, #e3e7ee 25%, transparent 25%, transparent 75%, #e3e7ee 75%);
+    background-size: 14px 14px;
+    background-position: 0 0, 7px 7px;
+}
+
+.ui-tile-preview img.is-contain { object-fit: contain; padding: 0.75rem; }
+
+.ui-media-stage {
+    display: flex;
+    min-height: 16rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    border-radius: var(--radius-lg);
+}
+
+.ui-tile-body {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.0625rem;
+    padding: 0.5rem 0.625rem;
+}
+
+.ui-tile-title {
+    overflow: hidden;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--fg);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ui-tile-meta {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+}
+
+/* One line: "322 bytes" otherwise wrapped and made exactly these tiles
+   taller than their neighbours; the translation status sits on the right */
+.ui-tile-meta > * { flex: none; white-space: nowrap; }
+.ui-tile-meta > .ui-locale-status { margin-inline-start: auto; }
+
+/* Inline input in the tile (e.g. caption in the gallery):
+   no border until you click into it — otherwise every tile looks like a form. */
+.ui-tile-caption {
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 0.125rem 0.25rem;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-size: var(--text-xs);
+    color: var(--fg);
+}
+
+.ui-tile-caption::placeholder { color: var(--fg-subtle); }
+
+.ui-tile-caption:hover { border-color: var(--line); }
+
+.ui-tile-caption:focus {
+    border-color: var(--accent);
+    background-color: var(--surface);
+    outline: none;
+    box-shadow: none;
+}
+
+/* While dragging (SortableJS) */
+.ui-tile.sortable-ghost { opacity: 0.35; }
+
+/* Actions in their own bar instead of floating over the image —
+   there they cover exactly the part you want to see. */
+.ui-tile-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.125rem;
+    padding: 0.25rem 0.375rem;
+    border-top: 1px solid var(--line);
+    background-color: var(--surface-sunken);
+}
+
+/* ── Coloured icon chips ─────────────────────────────────────── */
+
+/* Tinted background, strong icon colour. Colours come from tokens,
+   so dark mode adapts automatically. */
+.ui-tint-accent { background-color: var(--accent-soft); color: var(--accent); }
+.ui-tint-positive { background-color: var(--positive-soft); color: var(--positive); }
+.ui-tint-caution { background-color: var(--caution-soft); color: var(--caution); }
+.ui-tint-critical { background-color: var(--critical-soft); color: var(--critical); }
+.ui-tint-violet { background-color: var(--violet-soft); color: var(--violet); }
+.ui-tint-teal { background-color: var(--teal-soft); color: var(--teal); }
+.ui-tint-neutral { background-color: var(--surface-sunken); color: var(--fg-muted); }
+
+.ui-chip {
+    display: inline-flex;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    font-size: 1.125rem;
+}
+
+/* ── Gradient banner (dashboard welcome) ─────────────────────── */
+
+.ui-hero {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    padding: 1.5rem 1.625rem;
+    border-radius: var(--radius-2xl);
+    background-color: var(--color-brand-600);
+    background-image:
+        radial-gradient(40rem 14rem at 100% 0%, oklch(0.72 0.17 300 / 0.55), transparent 70%),
+        radial-gradient(30rem 12rem at 0% 100%, oklch(0.7 0.14 220 / 0.45), transparent 70%),
+        linear-gradient(120deg, var(--color-brand-600), oklch(0.5 0.21 285));
+    color: var(--color-ink-0);
+    box-shadow: 0 18px 40px -22px oklch(0.45 0.2 275 / 0.8);
+}
+
+/* Fine dot grid as texture, fading out to the right */
+.ui-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(oklch(1 0 0 / 0.14) 1px, transparent 1px);
+    background-size: 14px 14px;
+    mask-image: linear-gradient(90deg, transparent 35%, black);
+    pointer-events: none;
+}
+
+.ui-hero > * { position: relative; z-index: 1; }
+
+.ui-hero-kicker {
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: oklch(1 0 0 / 0.75);
+}
+
+.ui-hero-title {
+    margin-top: 0.125rem;
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.ui-hero-text {
+    margin-top: 0.25rem;
+    font-size: var(--text-sm);
+    color: oklch(1 0 0 / 0.82);
+}
+
+.ui-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ui-hero-btn {
+    display: inline-flex;
+    height: 2.375rem;
+    align-items: center;
+    gap: 0.4375rem;
+    padding-inline: 0.875rem;
+    border-radius: var(--radius-lg);
+    background-color: var(--color-ink-0);
+    color: var(--color-brand-700);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    box-shadow: 0 4px 12px -4px oklch(0.2 0.1 270 / 0.4);
+    transition: transform 0.12s ease, background-color 0.12s ease;
+}
+
+.ui-hero-btn:hover { transform: translateY(-1px); }
+
+.ui-hero-btn-ghost {
+    background-color: oklch(1 0 0 / 0.14);
+    color: var(--color-ink-0);
+    box-shadow: inset 0 0 0 1px oklch(1 0 0 / 0.25);
+    backdrop-filter: blur(6px);
+}
+
+.ui-hero-btn-ghost:hover { background-color: oklch(1 0 0 / 0.22); }
+
+/* Small chip for card titles */
+.ui-chip-sm {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9375rem;
+}
+
+.ui-card-title:has(.ui-chip) {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+
+/* ── Two columns: content + sidebar ──────────────────────────── */
+
+/*
+ * For edit pages with one large and several small blocks
+ * (user, media item). Below 64rem one column, above that a sidebar
+ * with limited width.
+ */
+.ui-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+}
+
+.ui-split-main,
+.ui-split-aside {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (width >= 64rem) {
+    .ui-split { grid-template-columns: minmax(0, 1fr) minmax(20rem, 26rem); }
+}
+
+/* ── Card grid ───────────────────────────────────────────────── */
+/*
+ * Similar cards (provider keys, settings groups) side by side
+ * instead of a long full-width stack. Each card from 26rem, one column
+ * on phones. align-items: start — otherwise short cards grow to the height
+ * of the tallest neighbour and have empty space at the bottom.
+ */
+.ui-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(26rem, 100%), 1fr));
+    gap: 1rem;
+    align-items: start;
+}
+
+/* ── Metrics grid ────────────────────────────────────────────── */
+/* Smaller minimum width than ui-grid: 2 x 2 on phones, four side by side on desktop */
+.ui-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr));
+    gap: 0.75rem;
+}
+
+@media (width < 40rem) {
+    .ui-stats .ui-stat { padding: 0.75rem 0.875rem; }
+    .ui-stats .ui-stat-value { font-size: var(--text-2xl); }
+    .ui-stats .ui-chip { width: 1.875rem; height: 1.875rem; font-size: 1rem; }
+}
+
+/* ── "⋯" menu for secondary actions (ui/compact.js, narrow only) ─── */
+.ui-more { position: relative; }
+
+.ui-more-menu {
+    position: absolute;
+    z-index: 40;
+    top: calc(100% + 0.375rem);
+    right: 0;
+    display: flex;
+    min-width: 13rem;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.375rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+    box-shadow: var(--shadow-popover);
+}
+
+.ui-more-menu[hidden] { display: none; }
+
+/* Buttons in the menu: full width, left-aligned, without their own border */
+.ui-more-menu > .ui-btn,
+.ui-more-menu > form,
+.ui-more-menu > form > .ui-btn {
+    width: 100%;
+}
+
+.ui-more-menu .ui-btn {
+    justify-content: flex-start;
+    border-color: transparent;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.ui-more-menu .ui-btn:hover { background-color: var(--surface-hover); }
+
+/* ── Filter button in toolbars (ui/compact.js) ───────────────── */
+.ui-toolbar-toggle { display: none; }
+
+@media (width < 40rem) {
+    .ui-toolbar[data-collapsible] .ui-toolbar-toggle { display: inline-flex; }
+
+    /* Closed: only search and filter button */
+    .ui-toolbar[data-collapsible]:not([data-open]) form > :not(:first-child):not(.ui-toolbar-toggle) { display: none; }
+
+    /* Open: each field a full row */
+    .ui-toolbar[data-collapsible][data-open] form > :not(.ui-toolbar-toggle) { width: 100%; }
+}
+
+/* Tab with an input error: red dot so you can find the error */
+.ui-tab[data-has-error]::after {
+    content: '';
+    width: 0.4375rem;
+    height: 0.4375rem;
+    flex: none;
+    border-radius: 9999px;
+    background: var(--critical);
+}
+
+/* Avatar / initials (x-ui.avatar) */
+.ui-avatar {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    border-radius: 9999px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+.ui-avatar-sm { width: 1.75rem; height: 1.75rem; font-size: 0.6875rem; }
+.ui-avatar-md { width: 2.5rem; height: 2.5rem; font-size: 0.875rem; }
+.ui-avatar-lg { width: 5rem; height: 5rem; font-size: 1.5rem; }
+/* Image field with preview: avatar left, drop zone, delete right;
+   when narrow, delete wraps below the drop zone */
+.ui-avatar-field {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+}
+
+.ui-avatar-field > .ui-avatar { width: 4rem; height: 4rem; font-size: 1.25rem; }
+/* Grows from 16rem; below that the row wraps instead of squashing the field */
+.ui-avatar-field-main {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 16rem;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* In the list row the image replaces the lead's background */
+.ui-list-lead:has(> .ui-avatar) { background: none; }
+
+/* Toolbar that stays at the top while the page scrolls (permissions picker) */
+.ui-toolbar-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: var(--surface);
+    border-start-start-radius: var(--radius-xl);
+    border-start-end-radius: var(--radius-xl);
+}

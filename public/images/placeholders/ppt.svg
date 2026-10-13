@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <rect width="96" height="96" rx="8" fill="#FFF7ED" />
+  <path d="M64,32H32c-2.2,0-4,1.8-4,4v24c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V36C68,33.8,66.2,32,64,32z M64,60H32V36h32V60z" fill="#EA580C" />
+  <rect x="40" y="40" width="16" height="16" rx="2" fill="#EA580C" />
+  <text x="37" y="66" font-family="Arial" font-size="9" font-weight="bold" fill="#EA580C">PPT</text>
+</svg>

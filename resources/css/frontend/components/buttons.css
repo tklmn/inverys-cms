@@ -1,0 +1,23 @@
+.btn {
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+}
+
+.btn-primary {
+    background-color: var(--color-blue-600);
+    color: #fff;
+}
+.btn-primary:hover { background-color: var(--color-blue-800); }
+
+.btn-secondary {
+    background-color: var(--color-gray-500);
+    color: #fff;
+}
+.btn-secondary:hover { background-color: var(--color-gray-700); }
+
+.btn-outline {
+    border: 1px solid var(--color-blue-600);
+    color: var(--color-blue-600);
+}
+.btn-outline:hover { background-color: var(--color-blue-50); }

@@ -1,0 +1,320 @@
+{
+    "slug": "default",
+    "name": "Default Theme",
+    "version": "1.0.0",
+    "description": "The default Inverys CMS theme with a clean, modern design.",
+    "author": "Inverys",
+    "screenshot": "assets/screenshot.png",
+    "supports_dark_mode": true,
+    "editable": true,
+    "settings": {
+        "primary_color": {
+            "type": "color",
+            "label": "Primary Color",
+            "group": "Colors",
+            "default": "#4f46e5",
+            "description": "Buttons, links, highlights and the glow effect."
+        },
+        "accent_color": {
+            "type": "color",
+            "label": "Accent Color",
+            "group": "Colors",
+            "default": "#9333ea",
+            "description": "Second colour for gradients (hero, gradient sections, key figures)."
+        },
+        "dark_background": {
+            "type": "select",
+            "label": "Dark Mode Background",
+            "group": "Colors",
+            "default": "navy",
+            "options": {
+                "navy": "Midnight blue",
+                "black": "Black",
+                "slate": "Slate"
+            }
+        },
+        "logo_url": {
+            "type": "image",
+            "label": "Logo",
+            "group": "Branding",
+            "default": "images/logo.svg"
+        },
+        "logo_url_dark": {
+            "type": "image",
+            "label": "Logo for Dark Mode",
+            "group": "Branding",
+            "default": "",
+            "description": "Optional. Shown in dark mode instead of the regular logo — for logos with dark lettering."
+        },
+        "font_family": {
+            "type": "select",
+            "label": "Font",
+            "group": "Design",
+            "default": "inter",
+            "options": {
+                "inter": "Inter (modern sans-serif)",
+                "outfit": "Outfit (geometric, light headings)",
+                "system": "System font",
+                "serif": "Serif headings"
+            }
+        },
+        "corner_style": {
+            "type": "select",
+            "label": "Corners",
+            "group": "Design",
+            "default": "rounded",
+            "options": {
+                "sharp": "Sharp",
+                "rounded": "Rounded",
+                "round": "Extra round (pill buttons)"
+            }
+        },
+        "background_glow": {
+            "type": "boolean",
+            "label": "Background Glow",
+            "group": "Design",
+            "default": true,
+            "description": "Soft glow in the primary colour at the top of every page."
+        },
+        "content_width": {
+            "type": "select",
+            "label": "Content Width",
+            "group": "Layout",
+            "default": "normal",
+            "options": {
+                "narrow": "Narrow",
+                "normal": "Normal",
+                "wide": "Wide"
+            }
+        },
+        "show_page_title": {
+            "type": "boolean",
+            "label": "Show Page Title",
+            "group": "Layout",
+            "default": true
+        },
+        "show_breadcrumbs": {
+            "type": "boolean",
+            "label": "Show Breadcrumbs",
+            "group": "Layout",
+            "default": true
+        },
+        "show_subpages": {
+            "type": "select",
+            "label": "Subpages Below the Content",
+            "group": "Layout",
+            "default": "auto",
+            "description": "Page builder pages usually link their subpages themselves.",
+            "options": {
+                "auto": "On text pages only",
+                "always": "Always",
+                "never": "Never"
+            }
+        },
+        "show_scroll_to_top": {
+            "type": "boolean",
+            "label": "Scroll to Top Button",
+            "group": "Layout",
+            "default": true
+        },
+        "header_style": {
+            "type": "select",
+            "label": "Header Style",
+            "group": "Navigation",
+            "default": "glass",
+            "options": {
+                "glass": "Translucent, stays on top",
+                "solid": "Solid, stays on top",
+                "static": "Solid, scrolls away"
+            }
+        },
+        "header_button_text": {
+            "type": "text",
+            "label": "Header Button",
+            "group": "Navigation",
+            "default": "",
+            "description": "Optional highlighted button in the header, e.g. \"Contact\". Empty: no button."
+        },
+        "header_button_url": {
+            "type": "text",
+            "label": "Header Button Link",
+            "group": "Navigation",
+            "default": "/contact"
+        },
+        "show_search": {
+            "type": "boolean",
+            "label": "Show Search",
+            "group": "Navigation",
+            "default": true
+        },
+        "show_theme_toggle": {
+            "type": "boolean",
+            "label": "Show Light/Dark Switch",
+            "group": "Navigation",
+            "default": true
+        },
+        "show_login": {
+            "type": "boolean",
+            "label": "Show Login Button",
+            "group": "Navigation",
+            "default": true,
+            "description": "The login page remains available under /login."
+        },
+        "show_profile": {
+            "type": "boolean",
+            "label": "Show Profile Link",
+            "group": "Navigation",
+            "default": true
+        },
+        "show_logout": {
+            "type": "boolean",
+            "label": "Show Logout Button",
+            "group": "Navigation",
+            "default": true
+        },
+        "footer_style": {
+            "type": "select",
+            "label": "Footer Style",
+            "group": "Footer",
+            "default": "dark",
+            "options": {
+                "dark": "Dark",
+                "light": "Light"
+            }
+        },
+        "footer_text": {
+            "type": "text",
+            "label": "Copyright Text",
+            "group": "Footer",
+            "default": "© 2026 Inverys CMS. All rights reserved."
+        }
+    },
+    "regions": {
+        "footer_content": {
+            "label": "Footer Content",
+            "description": "Additional block content displayed in the footer area.",
+            "default": [
+                {
+                    "id": "footer-cols",
+                    "type": "columns",
+                    "settings": {
+                        "columns": "3",
+                        "gap": "gap-8",
+                        "class": ""
+                    },
+                    "children": [
+                        {
+                            "id": "footer-col-1",
+                            "type": "column",
+                            "settings": {
+                                "class": ""
+                            },
+                            "children": [
+                                {
+                                    "id": "footer-brand",
+                                    "type": "heading",
+                                    "data": {
+                                        "text": "Inverys CMS",
+                                        "level": "h3",
+                                        "alignment": "left"
+                                    },
+                                    "settings": {
+                                        "class": "text-white"
+                                    }
+                                },
+                                {
+                                    "id": "footer-desc",
+                                    "type": "text",
+                                    "data": {
+                                        "content": "<p>A modern, extensible content management system built with Laravel. Create, manage and publish your content with ease.</p>"
+                                    },
+                                    "settings": {
+                                        "class": "text-gray-300"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id": "footer-col-2",
+                            "type": "column",
+                            "settings": {
+                                "class": ""
+                            },
+                            "children": [
+                                {
+                                    "id": "footer-links-title",
+                                    "type": "heading",
+                                    "data": {
+                                        "text": "Quick Links",
+                                        "level": "h3",
+                                        "alignment": "left"
+                                    },
+                                    "settings": {
+                                        "class": "text-white"
+                                    }
+                                },
+                                {
+                                    "id": "footer-links",
+                                    "type": "link-group",
+                                    "data": {
+                                        "links": [
+                                            {
+                                                "text": "Home",
+                                                "url": "/",
+                                                "target": "_self"
+                                            },
+                                            {
+                                                "text": "About",
+                                                "url": "/about",
+                                                "target": "_self"
+                                            },
+                                            {
+                                                "text": "Contact",
+                                                "url": "/contact",
+                                                "target": "_self"
+                                            }
+                                        ]
+                                    },
+                                    "settings": {
+                                        "class": "flex-col text-gray-300"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id": "footer-col-3",
+                            "type": "column",
+                            "settings": {
+                                "class": ""
+                            },
+                            "children": [
+                                {
+                                    "id": "footer-contact-title",
+                                    "type": "heading",
+                                    "data": {
+                                        "text": "Contact",
+                                        "level": "h3",
+                                        "alignment": "left"
+                                    },
+                                    "settings": {
+                                        "class": "text-white"
+                                    }
+                                },
+                                {
+                                    "id": "footer-contact",
+                                    "type": "text",
+                                    "data": {
+                                        "content": "<p>Friedrichstraße 123<br>10117 Berlin, Germany</p><p><a href=\"mailto:hello@inverys.com\">hello@inverys.com</a></p>"
+                                    },
+                                    "settings": {
+                                        "class": "text-gray-300"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

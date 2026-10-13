@@ -1,0 +1,688 @@
+/*
+ * Forms.
+ * One field height, one border, one focus style — regardless of field type.
+ * Errors are shown on the field AND as text, never by colour alone.
+ */
+
+/*
+ * Form grid.
+ *
+ * `auto-fit` instead of a fixed column count: the row is ALWAYS completely
+ * filled. A single field takes the full width, two share it,
+ * three fit side by side from a sufficient width. So there are
+ * no more half-empty form rows, and no view has to guess a column
+ * count.
+ *
+ * Wrapping flex row instead of grid: with a .ui-grid-full field in the grid,
+ * `auto-fit` kept all tracks occupied (the full field spans them), and
+ * two fields filled only two thirds of the row. Flex fills every row.
+ */
+.ui-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.ui-grid > * { flex: 1 1 18rem; min-width: 0; }
+
+/* Denser grid for metrics and short groups: four side by side,
+   where the normal grid only fits three */
+.ui-grid-dense > * { flex-basis: 13rem; }
+
+/* Selection lists made of toggle rows (roles, permissions, HTTP codes).
+   auto-fill instead of auto-fit: a group with a single entry stays as wide
+   as one column instead of stretching across the whole row — otherwise the
+   toggle would sit far away from its label. */
+.ui-choices {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(15rem, 100%), 1fr));
+    column-gap: 0.5rem;
+}
+
+/* Field that takes the whole row regardless of the column count */
+.ui-grid-full { grid-column: 1 / -1; }
+.ui-grid > .ui-grid-full { flex-basis: 100%; }
+
+.ui-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3125rem;
+}
+
+.ui-label {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--fg);
+}
+
+.ui-label-optional {
+    margin-inline-start: 0.375rem;
+    font-weight: 400;
+    color: var(--fg-muted);
+}
+
+.ui-input,
+.ui-select,
+.ui-textarea {
+    width: 100%;
+    padding: 0.4375rem 0.625rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    background-color: var(--field-bg);
+    color: var(--fg);
+    font-size: var(--text-sm);
+    line-height: 1.25rem;
+    transition:
+        border-color 0.12s ease,
+        box-shadow 0.12s ease;
+}
+
+.ui-input,
+.ui-select {
+    height: 2.25rem;
+    min-width: 9rem;
+}
+
+/* Arrow only for selects — in the shared rule above it would
+   make every text field look like a dropdown. */
+.ui-select {
+    appearance: none;
+    padding-inline-end: 2rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23697086' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    background-size: 1rem 1rem;
+    print-color-adjust: exact;
+}
+
+[dir='rtl'] .ui-select { background-position: left 0.5rem center; }
+
+.ui-textarea {
+    min-height: 6rem;
+    resize: vertical;
+}
+
+/* Multi-select: several rows visible instead of a single-line slit */
+.ui-select[multiple],
+.ui-select[size]:not([size='1']) {
+    height: auto;
+    min-height: 9rem;
+    padding-inline-end: 0.625rem;
+    background-image: none;
+}
+
+.ui-select[multiple] option {
+    padding: 0.25rem 0.375rem;
+    border-radius: var(--radius-xs);
+}
+
+.ui-input:focus,
+.ui-select:focus,
+.ui-textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+.ui-input:disabled,
+.ui-select:disabled,
+.ui-textarea:disabled {
+    background-color: var(--surface-sunken);
+    color: var(--fg-muted);
+    cursor: not-allowed;
+}
+
+.ui-field[data-invalid] .ui-input,
+.ui-field[data-invalid] .ui-select,
+.ui-field[data-invalid] .ui-textarea {
+    border-color: var(--critical);
+}
+
+.ui-field[data-invalid] .ui-input:focus,
+.ui-field[data-invalid] .ui-select:focus,
+.ui-field[data-invalid] .ui-textarea:focus {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--critical) 22%, transparent);
+}
+
+.ui-help {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+}
+
+.ui-error {
+    display: flex;
+    align-items: center;
+    gap: 0.3125rem;
+    font-size: var(--text-xs);
+    color: var(--critical);
+}
+
+/* ── Field with a leading icon (e.g. search) ─────────────────── */
+.ui-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.ui-input-group .ui-input { padding-inline-start: 2rem; }
+
+.ui-input-icon {
+    position: absolute;
+    inset-inline-start: 0.625rem;
+    font-size: 0.875rem;
+    color: var(--fg-subtle);
+    pointer-events: none;
+}
+
+/* ── Toggle ──────────────────────────────────────────────────── */
+.ui-toggle {
+    /* Reference point for the invisible checkbox below. Without relative
+       it positions itself against a far outer element — in scrollable
+       lists it then falls out of the scroll area and lengthens the whole
+       page (empty area below the navigation). */
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* The checkbox stays operable and focusable, but is invisible */
+.ui-toggle-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ui-toggle-track {
+    position: relative;
+    display: inline-flex;
+    flex: none;
+    width: 2.25rem;
+    height: 1.25rem;
+    border-radius: 9999px;
+    background-color: var(--line-strong);
+    transition: background-color 0.15s ease;
+}
+
+.ui-toggle-track::after {
+    content: '';
+    position: absolute;
+    top: 0.125rem;
+    inset-inline-start: 0.125rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 9999px;
+    background-color: var(--color-ink-0);
+    box-shadow: 0 1px 2px oklch(0.145 0.017 268 / 0.2);
+    transition: transform 0.15s ease;
+}
+
+.ui-toggle-input:checked + .ui-toggle-track { background-color: var(--accent); }
+.ui-toggle-input:checked + .ui-toggle-track::after { transform: translateX(1rem); }
+
+.ui-toggle-input:focus-visible + .ui-toggle-track {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.ui-toggle-input:disabled + .ui-toggle-track {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ui-toggle-label {
+    font-size: var(--text-sm);
+    color: var(--fg);
+}
+
+/* ── Checkboxes as a list ────────────────────────────────────── */
+.ui-check-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: 0.5rem 0.625rem;
+    border-radius: var(--radius-md);
+    transition: background-color 0.1s ease;
+}
+
+.ui-check-row { cursor: pointer; }
+
+/* Locked (e.g. shared field in translation mode) */
+.ui-check-row.is-disabled { cursor: not-allowed; opacity: 0.55; }
+.ui-check-row.is-disabled:hover { background-color: transparent; }
+
+.ui-check-row:hover { background-color: var(--surface-hover); }
+
+/* Only for checkboxes from third-party plugins — the toggle brings its
+   own invisible checkbox and must not be matched here. */
+.ui-check-row input[type='checkbox']:not(.ui-toggle-input) {
+    margin-top: 0.125rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: var(--radius-xs);
+    border-color: var(--line-strong);
+    color: var(--accent);
+}
+
+.ui-check-title {
+    font-size: var(--text-sm);
+    color: var(--fg);
+}
+
+.ui-check-hint {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+}
+
+/* ── File drop zone ──────────────────────────────────────────── */
+.ui-dropzone {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ui-dropzone-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    padding: 1.75rem 1rem;
+    border: 2px dashed var(--line-strong);
+    border-radius: var(--radius-xl);
+    background-color: var(--surface-sunken);
+    text-align: center;
+    cursor: pointer;
+    transition:
+        border-color 0.12s ease,
+        background-color 0.12s ease;
+}
+
+.ui-dropzone-area:hover,
+.ui-dropzone[data-over] .ui-dropzone-area {
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+}
+
+.ui-dropzone-area:focus-within {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.ui-dropzone-title {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--fg);
+}
+
+.ui-dropzone-hint {
+    font-size: var(--text-xs);
+    color: var(--fg-muted);
+}
+
+/* Single line next to a preview (avatar): icon left, text right */
+.ui-dropzone-compact .ui-dropzone-area {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    justify-items: start;
+    column-gap: 0.75rem;
+    row-gap: 0;
+    padding: 0.75rem 1rem;
+    border-width: 1px;
+    border-radius: var(--radius-lg);
+    text-align: start;
+}
+
+.ui-dropzone-compact .ui-dropzone-area > svg { grid-row: span 2; font-size: 1.25rem; }
+
+.ui-dropzone-file {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--accent);
+}
+
+/* ── Choice card (radio group with icon) ─────────────────────── */
+.ui-choice {
+    position: relative; /* likewise: contains an sr-only input */
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+    background-color: var(--surface);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--fg);
+    cursor: pointer;
+    transition:
+        border-color 0.12s ease,
+        background-color 0.12s ease;
+}
+
+.ui-choice:hover { border-color: var(--fg-subtle); }
+
+.ui-choice[data-selected],
+.ui-choice:has(input:checked) {
+    border-color: var(--accent);
+    background-color: var(--accent-soft);
+    color: var(--accent);
+}
+
+.ui-choice:has(input:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+/* ── Colour picker ───────────────────────────────────────────── */
+
+.ui-color {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ui-color-swatch {
+    width: 2.75rem;
+    height: 2.25rem;
+    flex: none;
+    padding: 0.1875rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-md);
+    background-color: var(--surface);
+    cursor: pointer;
+}
+
+.ui-color-swatch::-webkit-color-swatch-wrapper { padding: 0; }
+.ui-color-swatch::-webkit-color-swatch { border: none; border-radius: calc(var(--radius-md) - 2px); }
+.ui-color-swatch::-moz-color-swatch { border: none; border-radius: calc(var(--radius-md) - 2px); }
+
+.ui-color-text {
+    width: 7rem;
+    flex: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    text-transform: lowercase;
+}
+
+/* ── Image picker in the media dialog ────────────────────────── */
+
+.ui-pick {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    border: 2px solid transparent;
+    border-radius: var(--radius-lg);
+    background-color: var(--surface-sunken);
+    cursor: pointer;
+}
+
+.ui-pick img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Graphics shown whole on a light checkerboard (like .ui-tile-preview) */
+.ui-pick:has(img.is-contain) {
+    background-color: #f1f3f7;
+    background-image:
+        linear-gradient(45deg, #e3e7ee 25%, transparent 25%, transparent 75%, #e3e7ee 75%),
+        linear-gradient(45deg, #e3e7ee 25%, transparent 25%, transparent 75%, #e3e7ee 75%);
+    background-size: 14px 14px;
+    background-position: 0 0, 7px 7px;
+}
+
+.ui-pick img.is-contain { object-fit: contain; padding: 0.625rem 0.625rem 1.5rem; }
+
+.ui-pick-name {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    overflow: hidden;
+    padding: 1rem 0.5rem 0.3125rem;
+    background-image: linear-gradient(transparent, oklch(0.145 0.017 268 / 0.72));
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--color-ink-0);
+    text-align: start;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ui-pick:hover,
+.ui-pick:focus-visible {
+    border-color: var(--accent-line);
+    outline: none;
+}
+
+/* Selected (multi-select) — state hangs off aria-pressed */
+.ui-pick[aria-pressed='true'] {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.ui-pick[aria-pressed='true']::after {
+    content: '';
+    position: absolute;
+    top: 0.3125rem;
+    right: 0.3125rem;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 9999px;
+    background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E") center / 0.75rem no-repeat;
+}
+
+/* ── Code editor (CodeMirror, ui/code-editor.js) ─────────────── */
+.ui-code-editor {
+    display: flex;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+}
+
+.ui-code-editor .cm-editor { flex: 1; min-width: 0; }
+
+/* ── Option card (x-ui.option-card) ──────────────────────────── */
+
+.ui-option {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.875rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-xl);
+    background-color: var(--surface);
+    cursor: pointer;
+    transition:
+        border-color 0.12s ease,
+        box-shadow 0.12s ease,
+        background-color 0.12s ease;
+}
+
+.ui-option:hover { border-color: var(--line-strong); }
+
+.ui-option:has(input:checked) {
+    border-color: var(--accent);
+    background-color: color-mix(in oklab, var(--accent-soft) 60%, var(--surface));
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
+}
+
+.ui-option:has(input:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.ui-option.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.ui-option.is-disabled:hover { border-color: var(--line); }
+
+.ui-option-icon {
+    display: inline-flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-lg);
+    font-size: 1.25rem;
+}
+
+.ui-option-body {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.1875rem;
+    padding-inline-end: 1.25rem;
+}
+
+.ui-option-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--fg);
+}
+
+.ui-option-text {
+    font-size: var(--text-xs);
+    line-height: 1.45;
+    color: var(--fg-muted);
+}
+
+.ui-option-reason {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3125rem;
+    margin-top: 0.25rem;
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--caution);
+}
+
+/* Round selection dot top right */
+.ui-option-mark {
+    position: absolute;
+    top: 0.875rem;
+    right: 0.875rem;
+    width: 1rem;
+    height: 1rem;
+    border: 1.5px solid var(--line-strong);
+    border-radius: 9999px;
+    background-color: var(--surface);
+    transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+.ui-option:has(input:checked) .ui-option-mark {
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 8px var(--accent);
+}
+
+/* Dependent settings when the main toggle is off (ui/depends.js):
+   visible, but clearly inactive */
+.ui-inactive { opacity: 0.5; transition: opacity 0.15s ease; }
+
+/* ── Image field (x-ui.image-field) ──────────────────────────── */
+.ui-image-field { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; }
+.ui-image-controls { display: flex; flex: 1 1 18rem; flex-wrap: wrap; gap: 0.5rem; min-width: 0; }
+.ui-image-controls > .ui-input { flex: 1 1 12rem; }
+
+.ui-image-preview {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 7rem;
+    height: 4.5rem;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    /* Checkerboard as in image editors: makes transparent images visible */
+    background-color: var(--surface-sunken);
+    background-image:
+        linear-gradient(45deg, var(--surface-hover) 25%, transparent 25%, transparent 75%, var(--surface-hover) 75%),
+        linear-gradient(45deg, var(--surface-hover) 25%, transparent 25%, transparent 75%, var(--surface-hover) 75%);
+    background-size: 12px 12px;
+    background-position: 0 0, 6px 6px;
+    color: var(--fg-subtle);
+}
+
+.ui-image-preview img { width: 100%; height: 100%; object-fit: contain; padding: 0.375rem; }
+.ui-image-preview:not(.is-empty) [data-image-empty] { display: none; }
+/* Show the dark-mode logo on a dark background */
+.ui-image-preview-dark { background-color: #0b1020; background-image: none; border-color: #1e293b; }
+
+/* Locked field that a button unlocks (slug) */
+.ui-input[readonly] { background-color: var(--surface-sunken); color: var(--fg-muted); }
+
+/* Character counter (ui/char-count.js) */
+.ui-count { align-self: flex-end; font-size: var(--text-xs); color: var(--fg-subtle); font-variant-numeric: tabular-nums; }
+.ui-count.is-over { color: var(--caution); font-weight: 500; }
+
+/* Focal point of an image (backend/media/edit, ui/focal-point.js) */
+.ui-focal { display: flex; flex-direction: column; gap: 0.75rem; }
+.ui-focal-layout { display: grid; gap: 1rem; }
+@media (width >= 48rem) { .ui-focal-layout { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); align-items: start; } }
+.ui-focal-stage {
+    position: relative;
+    justify-self: start;
+    width: 100%;
+    max-width: 100%;
+    line-height: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background-color: var(--surface-sunken);
+    cursor: crosshair;
+    touch-action: none;
+    user-select: none;
+}
+.ui-focal-stage img { display: block; width: 100%; height: auto; border-radius: inherit; }
+[data-focal-disabled] .ui-focal-stage { cursor: not-allowed; }
+.ui-focal-marker {
+    position: absolute;
+    width: 1.75rem;
+    height: 1.75rem;
+    transform: translate(-50%, -50%);
+    border: 3px solid #fff;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--accent) 45%, transparent);
+    /* Dark ring + white ring: visible on light and dark images */
+    box-shadow: 0 0 0 2px oklch(0.145 0.017 268 / 0.85), 0 2px 8px oklch(0 0 0 / 0.35);
+    cursor: grab;
+}
+.ui-focal-marker::after {
+    content: '';
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 0.375rem;
+    height: 0.375rem;
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+    background: #fff;
+}
+.ui-focal-marker:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.ui-focal-marker:disabled { cursor: not-allowed; opacity: 0.7; }
+.ui-focal-side { display: flex; flex-direction: column; gap: 0.75rem; min-width: 0; }
+.ui-focal-status { font-size: var(--text-sm); font-variant-numeric: tabular-nums; color: var(--fg-muted); }
+.ui-focal-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.75rem; min-width: 0; border: 0; padding: 0; margin: 0; }
+.ui-focal-previews { display: flex; flex-direction: column; gap: 0.375rem; }
+.ui-focal-preview-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem; }
+.ui-focal-preview { display: flex; flex-direction: column; gap: 0.25rem; margin: 0; font-size: var(--text-xs); color: var(--fg-muted); }
+.ui-focal-preview img { display: block; height: 4.5rem; object-fit: cover; border: 1px solid var(--line); border-radius: var(--radius-sm); background-color: var(--surface-sunken); }
+.ui-focal-preview-square img { aspect-ratio: 1 / 1; }
+.ui-focal-preview-portrait img { aspect-ratio: 3 / 4; }
+.ui-focal-preview-wide img { aspect-ratio: 16 / 9; }

@@ -1,0 +1,12 @@
+{
+    "slug": "captcha",
+    "name": "Captcha",
+    "version": "1.0.0",
+    "screenshot": "assets/screenshot.png",
+    "description": "Built-in math captcha and external provider support (reCAPTCHA v3, Turnstile, hCaptcha, CaptchaFox, Friendly Captcha) with form-builder integration.",
+    "author": "Tom Kilimann",
+    "provider": "Plugins\\Captcha\\CaptchaServiceProvider",
+    "settings_route": "backend.captcha.settings",
+    "search_keywords": "captcha::captcha.search_keywords",
+    "is_system": true
+}

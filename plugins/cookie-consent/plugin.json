@@ -1,0 +1,11 @@
+{
+    "slug": "cookie-consent",
+    "name": "Cookie Consent",
+    "version": "1.0.0",
+    "screenshot": "assets/screenshot.png",
+    "description": "GDPR-compliant cookie consent banner with category-based opt-in, external service management, and conditional script injection.",
+    "author": "Tom Kilimann",
+    "provider": "Plugins\\CookieConsent\\CookieConsentServiceProvider",
+    "settings_route": "backend.cookie-consent.settings",
+    "search_keywords": "cookie-consent::cc.search_keywords"
+}

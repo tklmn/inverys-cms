@@ -1,0 +1,16 @@
+.block-container > *:first-child,
+.block-section > *:first-child { margin-top: 0; }
+
+.block-container > *:last-child,
+.block-section > *:last-child { margin-bottom: 0; }
+
+.block-text img { border-radius: var(--radius-lg); }
+
+.block-quote p { margin: 0; }
+
+.block-code pre {
+    font-size: var(--text-sm);
+    line-height: 1.625;
+}
+
+.block-accordion [x-collapse] { overflow: hidden; }
