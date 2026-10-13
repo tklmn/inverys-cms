@@ -1,0 +1,12 @@
+{
+    "slug": "language-de",
+    "name": "German",
+    "version": "1.0.0",
+    "description": "Language pack German: German user interface and German as a content language for multilingual sites.",
+    "author": "Tom Kilimann",
+    "provider": "Plugins\\LanguageDe\\LanguageDeServiceProvider",
+    "type": "language",
+    "locale": "de",
+    "native": "Deutsch",
+    "is_system": true
+}

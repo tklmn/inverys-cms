@@ -1,0 +1,224 @@
+@layer base {
+    /*
+     * Tailwind v4 sets border-color to currentColor by default.
+     * Until all views are migrated, the v3 expectation is kept:
+     * a border without a colour uses the theme's line colour.
+     */
+    *,
+    ::after,
+    ::before {
+        border-color: var(--line);
+    }
+
+    html {
+        -webkit-text-size-adjust: 100%;
+        scrollbar-gutter: stable;
+    }
+
+    body {
+        background-color: var(--canvas);
+        color: var(--fg);
+        font-family: var(--font-sans);
+        font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+    }
+
+    /* Colour glow at the top — on the frame around header and content, so it
+       shines through the semi-transparent header and stays put on scroll */
+    .app-frame {
+        background-image: var(--canvas-glow);
+        background-repeat: no-repeat;
+    }
+
+    /* Tabular numbers, so columns in lists do not jump */
+    :where(td, th, .tabular, [data-numeric]) {
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* One single focus style across the whole backend */
+    :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: var(--radius-xs);
+    }
+
+    ::selection {
+        background-color: var(--accent-soft);
+        color: var(--fg);
+    }
+
+    ::placeholder {
+        color: var(--fg-subtle);
+    }
+
+    hr {
+        border-color: var(--line);
+    }
+}
+
+@layer base {
+    /* Scrollbars follow the theme instead of being fixed dark */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--line-strong) transparent;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background-color: var(--line-strong);
+        border: 3px solid transparent;
+        background-clip: content-box;
+        border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background-color: var(--fg-subtle);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        ::before,
+        ::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+@layer base {
+    /*
+     * Form elements follow the tokens, even without a ui class.
+     *
+     * Otherwise the forms plugin sets fixed white surfaces and grey borders —
+     * in dark mode such fields glare. Plugins and themes ship their own
+     * markup that we cannot touch all of; that is why the rule applies
+     * to every input field in the backend.
+     *
+     * select/textarea with :not([hidden]): as a bare element selector the
+     * rule would be as specific as the forms plugin's, which comes later — in
+     * dark mode selects and textareas would stay white (page builder).
+     */
+    input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='hidden']),
+    select:not([hidden]),
+    textarea:not([hidden]) {
+        background-color: var(--surface);
+        border-color: var(--line-strong);
+        color: var(--fg);
+        border-radius: var(--radius-md);
+    }
+
+    input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not([type='hidden']):focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 22%, transparent);
+    }
+
+    input:disabled,
+    select:disabled,
+    textarea:disabled {
+        background-color: var(--surface-sunken);
+        color: var(--fg-muted);
+    }
+
+    /* Checkboxes and radio buttons */
+    input[type='checkbox'],
+    input[type='radio'] {
+        border-color: var(--line-strong);
+        background-color: var(--surface);
+        color: var(--accent);
+    }
+
+    input[type='checkbox']:focus-visible,
+    input[type='radio']:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        box-shadow: none;
+    }
+
+    /* Date and time fields: match the browser icon to the text colour */
+    input[type='date']::-webkit-calendar-picker-indicator,
+    input[type='time']::-webkit-calendar-picker-indicator,
+    input[type='datetime-local']::-webkit-calendar-picker-indicator {
+        filter: var(--picker-filter, none);
+        cursor: pointer;
+    }
+
+    /* File fields */
+    input[type='file'] {
+        color: var(--fg-muted);
+        font-size: var(--text-sm);
+    }
+
+    input[type='file']::file-selector-button {
+        margin-inline-end: 0.75rem;
+        padding: 0.375rem 0.625rem;
+        border: 1px solid var(--line-strong);
+        border-radius: var(--radius-md);
+        background-color: var(--surface);
+        color: var(--fg);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    input[type='file']::file-selector-button:hover {
+        background-color: var(--surface-hover);
+    }
+}
+
+.dark {
+    /* Calendar icons are drawn in black — invert them in the dark */
+    --picker-filter: invert(1) opacity(0.65);
+}
+
+@layer base {
+    /*
+     * Input fields in cards use the full width of their column.
+     *
+     * Plugin views often bring fields without w-full, which then sit as a
+     * narrow stub in a wide card. Toolbars are excluded, filters deliberately
+     * sit side by side there; a `w-auto` in the markup still wins,
+     * because utilities are stronger than the base layer.
+     */
+    .ui-card-body input:not([type='checkbox']):not([type='radio']):not([type='hidden']),
+    .ui-card-body select,
+    .ui-card-body textarea,
+    .ui-field input:not([type='checkbox']):not([type='radio']):not([type='hidden']),
+    .ui-field select,
+    .ui-field textarea {
+        width: 100%;
+    }
+
+    .ui-toolbar input,
+    .ui-toolbar select {
+        width: auto;
+    }
+}
+
+@layer base {
+    /*
+     * Icons are SVGs, and Tailwind's preflight turns every SVG into a block.
+     * In running text — say a card heading — the icon then ends up above
+     * the label instead of before it. inline-block puts it on the baseline;
+     * in flex containers this changes nothing, because flex blockifies
+     * its children anyway.
+     */
+    .ui-icon {
+        display: inline-block;
+        vertical-align: -0.125em;
+        flex: none;
+    }
+}

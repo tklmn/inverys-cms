@@ -1,0 +1,11 @@
+{
+    "slug": "multilingual",
+    "name": "Multilingual",
+    "version": "1.0.0",
+    "description": "Content in several languages: pages, blog, menus, forms, gallery, media and theme texts. Languages come as language packs.",
+    "author": "Tom Kilimann",
+    "provider": "Plugins\\Multilingual\\MultilingualServiceProvider",
+    "settings_route": "backend.multilingual.settings",
+    "search_keywords": "multilingual::ml.search_keywords",
+    "is_system": true
+}

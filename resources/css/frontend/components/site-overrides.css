@@ -1,0 +1,188 @@
+/*
+ * Adjustments that must win against the Tailwind classes of the content.
+ * Lives in the utilities layer (see app.css) — site.css (components) would
+ * otherwise lose there against classes like text-2xl from the blocks.
+ */
+
+/*
+ * Dark mode: content brings its own surfaces (dark:bg-gray-800,
+ * dark:bg-slate-900 …). On the website's deep blue background they looked like
+ * flat gray bands. The dark gray shades are therefore mapped in the frontend to
+ * the theme's night-blue tones — the content itself stays unchanged.
+ */
+.dark .site-canvas {
+    --color-gray-950: #04070e;
+    --color-gray-900: #0a101e;
+    --color-gray-800: #0f172a;
+    --color-gray-700: #1b2540;
+    --color-gray-600: #2b3653;
+    --color-gray-400: #a2acc1;
+    --color-gray-300: #c6cddd;
+
+    --color-slate-950: #04070e;
+    --color-slate-900: #0a101e;
+    --color-slate-800: #0f172a;
+    --color-slate-700: #1b2540;
+    --color-slate-600: #2b3653;
+    --color-slate-400: #a2acc1;
+    --color-slate-300: #c6cddd;
+}
+
+
+/*
+ * ── Forms (form builder plugin) ────────────────────────────────
+ * The field views bring fixed Tailwind gray tones (text-gray-700,
+ * border-gray-300 …) — without dark mode and without the primary color. Here
+ * they get the website's colors and shapes (wins against the classes).
+ */
+.form-builder-form .form-field label,
+.form-builder-form .form-field > span { margin-bottom: 0.375rem; font-size: 0.9375rem; font-weight: 550; color: var(--site-heading); }
+.form-builder-form .form-field :is(.space-y-2, .flex) label { margin-bottom: 0; font-weight: 400; color: var(--site-text); }
+.form-builder-form .form-field :is(input:not([type='checkbox'], [type='radio'], [type='file'], [type='hidden']), select, textarea) {
+    display: block;
+    width: 100%;
+    min-height: 2.875rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--site-border-strong);
+    border-radius: 0.75rem;
+    background-color: var(--site-surface-raised);
+    color: var(--site-heading);
+    font-size: 0.9375rem;
+    box-shadow: var(--site-shadow-sm);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.form-builder-form .form-field textarea { min-height: 8.5rem; resize: vertical; }
+.form-builder-form .form-field select[multiple] { min-height: 8rem; }
+.form-builder-form .form-field :is(input, select, textarea)::placeholder { color: var(--site-subtle); }
+.form-builder-form .form-field :is(input, select, textarea):focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--primary-soft);
+}
+.form-builder-form .form-field [aria-invalid='true'] { border-color: #dc2626; }
+.form-builder-form .form-field :is(input[type='checkbox'], input[type='radio']) { width: 1.125rem; height: 1.125rem; accent-color: var(--primary); }
+.form-builder-form .form-field input[type='file'] { color: var(--site-muted); font-size: 0.875rem; }
+.form-builder-form .form-field input[type='file']::file-selector-button {
+    margin-inline-end: 0.875rem;
+    padding: 0.5rem 1rem;
+    border: 0;
+    border-radius: 0.625rem;
+    background: var(--primary-soft);
+    color: var(--primary-text);
+    font-weight: 600;
+    cursor: pointer;
+}
+.form-builder-form .form-field [id$='-help'] { margin-top: 0.375rem; font-size: 0.8125rem; color: var(--site-subtle); }
+.form-builder-form .form-field [id$='-error'] { margin-top: 0.375rem; font-size: 0.8125rem; color: #dc2626; }
+.dark .form-builder-form .form-field [id$='-error'] { color: #f87171; }
+.form-builder-form .form-static-text { color: var(--site-muted); }
+.form-builder-form [id^='form-confirm-data-'] > * > div { border-color: var(--site-border); }
+.form-builder-form [id^='form-confirm-data-'] .text-gray-500 { color: var(--site-subtle); }
+.form-builder-form [id^='form-confirm-data-'] .text-gray-800 { color: var(--site-heading); }
+
+/* ── Gallery (gallery plugin) ───────────────────────────────── */
+.gallery-block .gallery-item img { border-radius: var(--site-radius); transition: transform 0.4s ease, box-shadow 0.2s ease; }
+.gallery-block .gallery-item a { display: block; overflow: hidden; border-radius: var(--site-radius); }
+.gallery-block .gallery-item a:hover img { transform: scale(1.04); }
+.gallery-block .gallery-item p { color: var(--site-subtle); }
+.gallery-block nav a { border-color: var(--site-border-strong); border-radius: 0.75rem; color: var(--site-muted); }
+.gallery-block nav a:hover { border-color: var(--primary); background: transparent; color: var(--site-heading); }
+
+/* ── Footer (block region) ──────────────────────────────────── */
+.site-footer-region .block-container,
+.site-footer-region .block-section { padding-block: 0; }
+
+.site-footer-region .block-heading {
+    margin-bottom: 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--site-footer-heading);
+}
+
+/* The first heading of the first column is usually the brand name — larger */
+.site-footer-region .block-column:first-child > .block-heading:first-child {
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    text-transform: none;
+}
+
+.site-footer-region .block-text { font-size: 0.9375rem; line-height: 1.7; }
+.site-footer-region .block-text p { color: var(--site-footer-text); }
+
+/* Link groups as a plain list instead of buttons */
+.site-footer-region .block-link-group { flex-direction: column; align-items: flex-start; gap: 0.625rem; }
+.site-footer-region .block-link-group .site-btn {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    color: var(--site-footer-text);
+    font-weight: 400;
+    font-size: 0.9375rem;
+}
+.site-footer-region .block-link-group .site-btn:hover { color: var(--site-footer-link-hover); transform: none; }
+.site-footer-region .block-link-group .site-btn svg { display: none; }
+
+/*
+ * Colors in body text. .prose (typography plugin) sets its own colors in the
+ * utilities layer — so the website colors belong here, not in
+ * site.css. The tokens switch by themselves in dark mode, which makes
+ * prose-invert unnecessary.
+ */
+.site-prose {
+    --tw-prose-body: var(--site-muted);
+    --tw-prose-headings: var(--site-heading);
+    --tw-prose-links: var(--primary-text);
+    --tw-prose-bold: var(--site-heading);
+    --tw-prose-counters: var(--site-subtle);
+    --tw-prose-bullets: var(--primary);
+    --tw-prose-hr: var(--site-border-strong);
+    --tw-prose-quotes: var(--site-heading);
+    --tw-prose-quote-borders: var(--primary);
+    --tw-prose-code: var(--site-heading);
+    --tw-prose-th-borders: var(--site-border-strong);
+    --tw-prose-td-borders: var(--site-border);
+}
+
+/*
+ * Inline code: .prose adds backticks before and after (::before/::after) —
+ * body text then showed `/api/v1/` including the ticks. A chip instead.
+ */
+.site-prose :where(code):not(:where(pre *))::before,
+.site-prose :where(code):not(:where(pre *))::after { content: none; }
+.site-prose :where(code):not(:where(pre *)) {
+    padding: 0.125rem 0.4375rem;
+    border-radius: 0.4375rem;
+    background: var(--primary-softer);
+    border: 1px solid color-mix(in oklab, var(--primary) 14%, transparent);
+    color: var(--site-heading);
+    font-size: 0.875em;
+    font-weight: 500;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+/* Images in body text: soft corners, fine border */
+.site-prose :where(img) { border-radius: var(--site-radius-lg); border: 1px solid var(--site-border); }
+
+.site-inverted .site-prose,
+.site-inverted .block-text {
+    --tw-prose-body: var(--site-text);
+    --tw-prose-headings: #ffffff;
+    --tw-prose-bold: #ffffff;
+    --tw-prose-links: #ffffff;
+    --tw-prose-bullets: rgb(255 255 255 / 0.7);
+}
+
+.site-footer-region .prose,
+.site-footer-region .site-prose {
+    --tw-prose-body: var(--site-footer-text);
+    --tw-prose-headings: var(--site-footer-heading);
+    --tw-prose-links: var(--site-footer-link);
+    --tw-prose-bold: var(--site-footer-heading);
+    --tw-prose-bullets: var(--site-footer-text);
+}

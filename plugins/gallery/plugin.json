@@ -1,0 +1,11 @@
+{
+    "slug": "gallery",
+    "name": "Gallery",
+    "version": "1.0.0",
+    "description": "Album management with media library integration, page builder block, lightbox, and responsive grid.",
+    "author": "Tom Kilimann",
+    "provider": "Plugins\\Gallery\\GalleryServiceProvider",
+    "settings_route": "backend.gallery.settings",
+    "search_keywords": "gallery::gallery.search_keywords",
+    "is_system": true
+}

@@ -1,0 +1,132 @@
+{
+    "slug": "modern",
+    "name": "Modern Theme",
+    "version": "1.0.0",
+    "description": "A bold, magazine-style theme with gradient accents and centered navigation.",
+    "author": "Inverys",
+    "screenshot": "assets/screenshot.png",
+    "supports_dark_mode": true,
+    "editable": true,
+    "settings": {
+        "gradient_start": {
+            "type": "color",
+            "label": "Gradient Start",
+            "group": "Colors",
+            "default": "#667eea"
+        },
+        "gradient_end": {
+            "type": "color",
+            "label": "Gradient End",
+            "group": "Colors",
+            "default": "#764ba2"
+        },
+        "logo_url": {
+            "type": "image",
+            "label": "Logo",
+            "group": "Branding",
+            "default": "images/logo.svg"
+        },
+        "footer_text": {
+            "type": "text",
+            "label": "Copyright Text",
+            "group": "Footer",
+            "default": "© 2026 Inverys CMS. All rights reserved."
+        },
+        "show_hero": {
+            "type": "boolean",
+            "label": "Show Hero Header",
+            "group": "Layout",
+            "default": true
+        },
+        "max_width": {
+            "type": "select",
+            "label": "Content Max Width",
+            "group": "Layout",
+            "options": {
+                "max-w-4xl": "Small (4xl)",
+                "max-w-5xl": "Medium (5xl)",
+                "max-w-6xl": "Large (6xl)",
+                "max-w-7xl": "Extra Large (7xl)"
+            },
+            "default": "max-w-7xl"
+        },
+        "show_page_title": {
+            "type": "boolean",
+            "label": "Show Page Title",
+            "group": "Layout",
+            "default": true
+        },
+        "show_breadcrumbs": {
+            "type": "boolean",
+            "label": "Show Breadcrumbs",
+            "group": "Layout",
+            "default": true
+        },
+        "show_search": {
+            "type": "boolean",
+            "label": "Show Search",
+            "group": "Navigation",
+            "default": true
+        },
+        "show_profile": {
+            "type": "boolean",
+            "label": "Show Profile Link",
+            "group": "Navigation",
+            "default": true
+        },
+        "show_logout": {
+            "type": "boolean",
+            "label": "Show Logout Button",
+            "group": "Navigation",
+            "default": true
+        },
+        "show_scroll_to_top": {
+            "type": "boolean",
+            "label": "Scroll to Top Button",
+            "group": "Layout",
+            "default": true
+        }
+    },
+    "regions": {
+        "footer_content": {
+            "label": "Footer Content",
+            "description": "Additional block content displayed in the footer area.",
+            "default": [
+                {
+                    "id": "ft-cols",
+                    "type": "columns",
+                    "settings": {"columns": "3", "gap": "gap-8", "class": ""},
+                    "children": [
+                        {
+                            "id": "ft-col1",
+                            "type": "column",
+                            "settings": {"class": ""},
+                            "children": [
+                                {"id": "ft-h1", "type": "heading", "data": {"text": "Inverys CMS", "level": "h3", "alignment": "left"}, "settings": {"class": ""}},
+                                {"id": "ft-t1", "type": "text", "data": {"content": "<p>A modern, extensible content management system built with Laravel. Create, manage and publish your content with ease.</p>"}, "settings": {"class": ""}}
+                            ]
+                        },
+                        {
+                            "id": "ft-col2",
+                            "type": "column",
+                            "settings": {"class": ""},
+                            "children": [
+                                {"id": "ft-h2", "type": "heading", "data": {"text": "Quick Links", "level": "h3", "alignment": "left"}, "settings": {"class": ""}},
+                                {"id": "ft-links", "type": "link-group", "data": {"links": [{"text": "Home", "url": "/", "target": "_self"}, {"text": "About", "url": "/about", "target": "_self"}, {"text": "Contact", "url": "/contact", "target": "_self"}]}, "settings": {"class": ""}}
+                            ]
+                        },
+                        {
+                            "id": "ft-col3",
+                            "type": "column",
+                            "settings": {"class": ""},
+                            "children": [
+                                {"id": "ft-h3", "type": "heading", "data": {"text": "Contact", "level": "h3", "alignment": "left"}, "settings": {"class": ""}},
+                                {"id": "ft-contact", "type": "text", "data": {"content": "<p>123 Main Street<br>City, State 12345</p><p><a href=\"mailto:info@example.com\">info@example.com</a></p>"}, "settings": {"class": ""}}
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

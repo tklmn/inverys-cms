@@ -1,0 +1,20 @@
+{
+    "name": "inverys/cookie-consent",
+    "description": "GDPR-compliant cookie consent with category-based opt-in and external service management for Inverys CMS.",
+    "type": "inverys-plugin",
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        { "name": "Tom Kilimann", "email": "tkilimann@icloud.com" }
+    ],
+    "extra": {
+        "inverys": {
+            "slug": "cookie-consent"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\CookieConsent\\": "src/"
+        }
+    }
+}

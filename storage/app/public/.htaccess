@@ -1,0 +1,23 @@
+# Uploaded files (public/storage → storage/app/public) are served directly by
+# the web server, without Laravel's security headers.
+# Extra protection in case HTML/SVG/PHP ever ends up here:
+# no script, no PHP execution, no MIME sniffing.
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+
+    # Only for document types that can contain script — PDFs should still
+    # open in the browser viewer
+    <FilesMatch "\.(svgz?|html?|xhtml|xml|xsl)$">
+        Header set Content-Security-Policy "default-src 'none'; img-src 'self' data:; style-src 'unsafe-inline'; sandbox"
+    </FilesMatch>
+</IfModule>
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+<FilesMatch "\.(php\d?|phtml|phar)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+</FilesMatch>

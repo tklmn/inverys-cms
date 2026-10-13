@@ -1,0 +1,186 @@
+/*
+ * Log in, register, forgot password … (backend/layouts/guest.blade.php)
+ *
+ * One column: logo, form card, links below. Gradient in the accent
+ * colour in the background. Tokens only — light and
+ * dark follow ThemeHelper like the rest of the backend.
+ */
+
+.auth-page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 1.25rem 1rem 1.5rem;
+    background-color: var(--canvas);
+    color: var(--fg);
+    isolation: isolate;
+    overflow: hidden;
+}
+
+@media (width >= 40rem) { .auth-page { padding: 1.5rem 2rem; } }
+
+/* Gradient across the whole surface: accent top left, violet bottom right */
+.auth-page::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+        radial-gradient(60rem 40rem at 0% 0%, color-mix(in oklab, var(--accent) 26%, transparent), transparent 65%),
+        radial-gradient(55rem 40rem at 100% 100%, color-mix(in oklab, #a855f7 22%, transparent), transparent 65%),
+        linear-gradient(160deg, color-mix(in oklab, var(--accent) 8%, var(--canvas)), var(--canvas) 50%, color-mix(in oklab, #a855f7 8%, var(--canvas)));
+}
+
+/*
+ * Primary colour of the website (theme setting, set in the layout as
+ * --auth-brand): buttons, links, focus and gradient match the site you
+ * came from — instead of the backend blue.
+ */
+.auth-page.has-brand {
+    --accent: var(--auth-brand);
+    --accent-hover: color-mix(in oklab, var(--auth-brand) 86%, black);
+    --accent-fg: #ffffff;
+    --accent-soft: color-mix(in oklab, var(--auth-brand) 10%, transparent);
+    --accent-line: color-mix(in oklab, var(--auth-brand) 32%, transparent);
+}
+.dark .auth-page.has-brand {
+    --accent: color-mix(in oklab, var(--auth-brand) 88%, white);
+    --accent-hover: color-mix(in oklab, var(--auth-brand) 72%, white);
+    --accent-soft: color-mix(in oklab, var(--auth-brand) 22%, transparent);
+    --accent-line: color-mix(in oklab, var(--auth-brand) 45%, transparent);
+}
+
+.auth-topbar { display: flex; justify-content: flex-end; }
+
+.auth-center {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-block: 2rem;
+}
+
+.auth-logo { display: inline-flex; align-items: baseline; margin-bottom: 1.75rem; }
+.auth-logo svg, .auth-logo img { height: 1.5rem; width: auto; }
+.auth-logo-dark { display: none; }
+.dark .auth-logo-dark { display: block; }
+.dark .auth-logo-light.has-dark { display: none; }
+/* Logo in the dark: indigo becomes paper (brand guide), the teal dot stays */
+.dark .auth-logo svg [fill='#1E1B4B'] { fill: #F8FAFC; }
+
+.auth-card {
+    width: 100%;
+    max-width: 27rem;
+    padding: 2rem 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 1.5rem;
+    background: color-mix(in oklab, var(--surface) 88%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+        0 1px 2px oklch(0.145 0.017 268 / 0.05),
+        0 24px 60px -24px oklch(0.145 0.017 268 / 0.3);
+}
+
+@media (width >= 30rem) { .auth-card { padding: 2.5rem 2.25rem; } }
+
+/* The registration form has two fields side by side */
+.auth-card:has(.auth-row) { max-width: 32rem; }
+
+.auth-head { margin-bottom: 1.75rem; text-align: center; }
+.auth-title { font-size: 1.625rem; line-height: 1.2; font-weight: 750; letter-spacing: -0.02em; color: var(--fg); }
+.auth-text { margin-top: 0.5rem; font-size: var(--text-sm); line-height: 1.6; color: var(--fg-muted); text-wrap: pretty; }
+
+.auth-form { display: grid; gap: 1.125rem; }
+.auth-form .ui-input { height: 2.75rem; font-size: 0.9375rem; }
+.auth-row { display: grid; gap: 1.125rem; }
+@media (width >= 30rem) { .auth-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+
+/* Label left, link right (e.g. "Forgot password?") */
+.auth-label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.auth-label-row .ui-label { margin-bottom: 0; }
+.auth-label-row + * { margin-top: 0.375rem; }
+
+.auth-link { font-size: var(--text-sm); font-weight: 500; color: var(--accent); }
+.auth-link:hover { color: var(--accent-hover); text-decoration: underline; }
+
+/* Show password */
+.auth-password { position: relative; }
+.auth-password .ui-input { padding-inline-end: 2.75rem; }
+.auth-password-toggle {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-end: 0.25rem;
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    color: var(--fg-subtle);
+    border-radius: var(--radius-md);
+}
+.auth-password-toggle:hover { color: var(--fg); }
+.auth-password-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: -4px; }
+
+/*
+ * May wrap: buttons are otherwise nowrap, and a long text (DE) made the
+ * card wider than the phone — .auth-page silently clips the rest.
+ */
+.auth-submit { width: 100%; height: auto; min-height: 2.875rem; padding-block: 0.5rem; justify-content: center; font-size: 0.9375rem; white-space: normal; text-wrap: balance; }
+
+.auth-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.auth-actions > * { flex: 1 1 12rem; }
+
+/* Below the card: "No account yet?", log out … */
+.auth-after { width: 100%; max-width: 27rem; }
+.auth-foot { margin-top: 1.5rem; text-align: center; font-size: var(--text-sm); color: var(--fg-muted); }
+.auth-foot + .auth-foot { margin-top: 0.75rem; }
+
+.auth-copy { text-align: center; font-size: var(--text-xs); color: var(--fg-subtle); }
+
+/* Text button (log out, resend code) */
+.auth-text-btn { font: inherit; font-weight: 500; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; }
+.auth-text-btn:hover { color: var(--accent-hover); text-decoration: underline; }
+
+/* Password rules (registration) */
+.auth-hints { padding: 0.875rem 1rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface-sunken); }
+.auth-hints-title { display: block; margin-bottom: 0.5rem; font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-muted); }
+.auth-hints ul { display: grid; gap: 0.25rem; }
+.auth-hints li { display: flex; align-items: center; gap: 0.5rem; font-size: var(--text-sm); color: var(--fg-muted); }
+.auth-hints li::before { content: ''; width: 0.5rem; height: 0.5rem; flex: none; border-radius: 999px; background: var(--line-strong); transition: background 0.15s ease; }
+.auth-hints li[data-valid='1'] { color: var(--positive); }
+.auth-hints li[data-valid='1']::before { background: var(--positive); }
+
+/* Account area (/profile without backend access): login surface, but wide */
+.account-page { overflow: visible; }
+.account-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+}
+.account-logo { margin-bottom: 0; }
+.account-logo svg, .account-logo img { height: 1.125rem; }
+.account-main {
+    flex: 1;
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-block: 1.5rem 2.5rem;
+}
+
+/* "CMS" after the Inverys wordmark — like "Forum" in Inverys Forum:
+   regular weight, small, muted text colour, on the baseline */
+.brand-product {
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1;
+    color: #59637a;
+    white-space: nowrap;
+}
+.dark .brand-product { color: #98a1b5; }
