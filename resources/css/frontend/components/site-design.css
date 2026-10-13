@@ -1,0 +1,375 @@
+/*
+ * Design options that editors choose in the page builder and the theme
+ * customizer — without knowing any CSS classes.
+ *
+ *   Surfaces      site-surface-{soft|tint|gradient|dark|glow}  (section, container, hero)
+ *   Inverted      site-inverted — light text on a dark/colored surface;
+ *                 switches all --site-* colors of the children (cards, lists …)
+ *   Components    hero, stats, icon cards, lead text, gradient text
+ *   Theme         data-header / data-footer / data-radius / data-font /
+ *                 data-glow / data-dark on <body> (from the theme settings)
+ */
+
+/* ── Surfaces ───────────────────────────────────────────────── */
+.site-surface-soft { background-color: var(--site-bg-soft); }
+.site-surface-tint { background-color: var(--primary-softer); }
+.site-surface-gradient { background-image: var(--site-gradient); }
+.site-surface-dark { background-color: #0b1020; }
+.dark .site-surface-dark { background-color: #03050b; }
+.site-surface-glow {
+    background-image:
+        radial-gradient(50rem 26rem at 80% 0%, var(--primary-soft), transparent 70%),
+        radial-gradient(36rem 22rem at 10% 100%, color-mix(in oklab, var(--accent) 14%, transparent), transparent 70%);
+}
+
+/* Soft corners for surfaces inside a container (not full-bleed) */
+.site-surface-rounded { border-radius: var(--site-radius-lg); }
+
+.site-inverted {
+    --site-text: rgb(255 255 255 / 0.92);
+    --site-heading: #ffffff;
+    --site-muted: rgb(255 255 255 / 0.78);
+    --site-subtle: rgb(255 255 255 / 0.62);
+    --site-border: rgb(255 255 255 / 0.16);
+    --site-border-strong: rgb(255 255 255 / 0.28);
+    --site-surface: rgb(255 255 255 / 0.08);
+    --site-surface-raised: rgb(255 255 255 / 0.12);
+    --site-bg-soft: rgb(255 255 255 / 0.08);
+    --primary-text: #ffffff;
+    --primary-soft: rgb(255 255 255 / 0.16);
+    --primary-softer: rgb(255 255 255 / 0.08);
+    --site-shadow: 0 16px 40px -24px rgb(0 0 0 / 0.5);
+    color: var(--site-text);
+}
+
+/* Body text on dark surfaces: site-overrides.css (against .prose of the typography plugin) */
+
+/* On colored surfaces: primary button light, secondary buttons as outline */
+.site-inverted .site-btn-primary { background: #fff; color: #0f172a; box-shadow: 0 10px 24px -12px rgb(0 0 0 / 0.45); }
+.site-inverted .site-btn-primary:hover { background: #f1f5f9; }
+.site-inverted .site-btn-secondary,
+.site-inverted .site-btn-outline { background: transparent; color: #fff; border-color: rgb(255 255 255 / 0.4); box-shadow: none; }
+.site-inverted .site-btn-secondary:hover,
+.site-inverted .site-btn-outline:hover { background: rgb(255 255 255 / 0.12); border-color: rgb(255 255 255 / 0.7); }
+
+/* ── Text options ───────────────────────────────────────────── */
+.block-heading { color: var(--site-heading); }
+
+/* Lead: readable line length even on wide pages (template "Container") */
+.site-lead {
+    max-width: 48rem;
+    font-size: 1.1875rem;
+    line-height: 1.7;
+    color: var(--site-muted);
+    text-wrap: pretty;
+}
+
+@media (width >= 48rem) { .site-lead { font-size: 1.25rem; } }
+
+.site-text-center { text-align: center; }
+.site-text-center.site-lead,
+.site-text-center .site-lead { margin-inline: auto; max-width: 44rem; }
+.site-text-right { text-align: right; }
+
+.site-text-gradient {
+    background-image: var(--site-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.site-inverted .site-text-gradient {
+    background-image: linear-gradient(135deg, #fff, rgb(255 255 255 / 0.7));
+}
+
+.site-heading-group { display: flex; flex-direction: column; align-items: flex-start; gap: 0.875rem; }
+.site-heading-group.site-text-center { align-items: center; }
+.site-heading-group.site-text-right { align-items: flex-end; }
+
+/* ── Icon badge (cards, stats) ──────────────────────────────── */
+.site-icon-badge {
+    display: inline-grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: calc(var(--site-radius) * 0.9);
+    background: var(--primary-soft);
+    color: var(--primary-text);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--primary) 18%, transparent);
+}
+
+.site-icon-badge svg { width: 1.5rem; height: 1.5rem; }
+
+.site-icon-badge-gradient {
+    background-image: var(--site-gradient);
+    color: #fff;
+    box-shadow: 0 10px 24px -12px var(--primary-ring);
+}
+
+/* ── Card variants ──────────────────────────────────────────── */
+.site-card-plain { background: transparent; border-color: transparent; box-shadow: none; }
+.site-card-plain .site-card-body { padding: 0.5rem 0; }
+.site-card-tinted { background: var(--primary-softer); border-color: color-mix(in oklab, var(--primary) 16%, transparent); box-shadow: none; }
+.site-card-center .site-card-body { align-items: center; text-align: center; }
+.site-card-center .site-link-arrow { align-self: center; }
+
+/* ── Buttons: sizes ─────────────────────────────────────────── */
+.site-btn-lg { min-height: 3.25rem; padding: 0.75rem 1.75rem; font-size: 1rem; }
+.site-btn-sm { min-height: 2.375rem; padding: 0.375rem 1rem; font-size: 0.875rem; }
+
+.site-btn-group { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.site-text-center .site-btn-group, .site-btn-group.site-text-center { justify-content: center; }
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.site-hero { position: relative; overflow: hidden; }
+
+.site-hero-inner {
+    display: grid;
+    gap: 3rem;
+    align-items: center;
+    padding-block: 4.5rem;
+}
+
+.site-hero-large .site-hero-inner { padding-block: 6rem; }
+
+.site-hero-compact .site-hero-inner { padding-block: 3.5rem; }
+
+@media (width >= 64rem) {
+    .site-hero-split .site-hero-inner { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); }
+    .site-hero-inner { padding-block: 6rem; }
+    .site-hero-large .site-hero-inner { padding-block: 8rem; }
+    .site-hero-compact .site-hero-inner { padding-block: 4.5rem; }
+}
+
+/* Compact = call to action: smaller title */
+.site-hero-compact .site-hero-title { font-size: clamp(2rem, 1.5rem + 2vw, 3rem); }
+
+.site-hero-centered .site-hero-content { max-width: 52rem; margin-inline: auto; text-align: center; align-items: center; }
+.site-hero-content { display: flex; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+
+.site-hero-title {
+    font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.25rem);
+    line-height: 1.04;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    color: var(--site-heading);
+    text-wrap: balance;
+}
+
+.site-hero-text { max-width: 40rem; font-size: 1.1875rem; line-height: 1.7; color: var(--site-muted); text-wrap: pretty; }
+@media (width >= 48rem) { .site-hero-text { font-size: 1.3125rem; } }
+
+.site-hero-actions { display: flex; flex-wrap: wrap; gap: 0.875rem; margin-top: 0.5rem; }
+.site-hero-centered .site-hero-actions { justify-content: center; }
+
+.site-hero-media img {
+    width: 100%;
+    border-radius: var(--site-radius-lg);
+    border: 1px solid var(--site-border);
+    box-shadow: var(--site-shadow-lg);
+}
+
+/* Subtle grid behind the hero — decoration only */
+.site-hero-grid::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image:
+        linear-gradient(to right, color-mix(in oklab, var(--site-heading) 6%, transparent) 1px, transparent 1px),
+        linear-gradient(to bottom, color-mix(in oklab, var(--site-heading) 6%, transparent) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: radial-gradient(ellipse at 50% 30%, black, transparent 70%);
+    pointer-events: none;
+}
+
+.site-hero { isolation: isolate; }
+
+/* ── Stats ──────────────────────────────────────────────────── */
+/* On phones two side by side instead of four tall cards stacked */
+.site-stats {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr));
+}
+
+@media (width >= 40rem) { .site-stats { gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(min(12rem, 100%), 1fr)); } }
+
+.site-stat { display: flex; flex-direction: column; gap: 0.375rem; }
+.site-stats-cards .site-stat {
+    padding: 1.25rem 1rem;
+    background: var(--site-surface);
+    border: 1px solid var(--site-border);
+    border-radius: var(--site-radius-lg);
+    box-shadow: var(--site-shadow);
+}
+
+@media (width >= 40rem) { .site-stats-cards .site-stat { padding: 1.5rem 1.625rem; } }
+
+.site-stats.site-text-center .site-stat { align-items: center; }
+
+.site-stat-value {
+    font-size: clamp(2.25rem, 1.8rem + 1.6vw, 3.25rem);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    font-variant-numeric: tabular-nums;
+    background-image: var(--site-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.site-inverted .site-stat-value { background-image: linear-gradient(135deg, #fff, rgb(255 255 255 / 0.75)); }
+
+/* Dark: gradient text from lightened theme colors — a dark primary
+   color would otherwise be barely readable on a dark background */
+.dark .site-stat-value,
+.dark .site-text-gradient {
+    background-image: linear-gradient(135deg, color-mix(in oklab, var(--primary) 45%, white), color-mix(in oklab, var(--accent, var(--primary)) 45%, white));
+}
+.dark .site-inverted .site-stat-value,
+.dark .site-inverted .site-text-gradient { background-image: linear-gradient(135deg, #fff, rgb(255 255 255 / 0.75)); }
+.site-stat-label { color: var(--site-muted); font-weight: 500; }
+
+/* ── Spacing between blocks ─────────────────────────────────── */
+/* In a column: keep heading, text, list, notice … from sticking together */
+.block-column > * + * { margin-top: 1rem; }
+
+/* Pages without full width: blocks stacked directly, headings with more space above */
+.site-flow > * + * { margin-top: 1.5rem; }
+.site-flow > * + :is(.block-heading, .site-heading-group) { margin-top: 3rem; }
+
+/* Container option "Spacing between blocks" */
+.site-gap-none > * + * { margin-top: 0; }
+.site-gap-sm > * + * { margin-top: 0.75rem; }
+.site-gap-md > * + * { margin-top: 1.5rem; }
+.site-gap-lg > * + * { margin-top: 2.5rem; }
+
+/* ── Background image (container, section, hero) ────────────── */
+.site-has-bg { position: relative; isolation: isolate; overflow: hidden; }
+.site-bg-media { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+.site-has-bg::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.site-bg-dark::before { background: linear-gradient(180deg, rgb(3 7 18 / 0.55), rgb(3 7 18 / 0.75)); }
+.site-bg-light::before { background: linear-gradient(180deg, rgb(255 255 255 / 0.7), rgb(255 255 255 / 0.85)); }
+.dark .site-bg-light::before { background: linear-gradient(180deg, rgb(7 11 22 / 0.7), rgb(7 11 22 / 0.85)); }
+.site-bg-brand::before { background-image: var(--site-gradient); opacity: 0.85; }
+
+/* ── Visibility per device (all blocks, "Advanced") ──────────── */
+@media (width < 48rem) { .site-only-desktop { display: none !important; } }
+@media (width >= 48rem) { .site-only-mobile { display: none !important; } }
+
+/* ── Button group ───────────────────────────────────────────── */
+.block-buttons.site-text-right { justify-content: flex-end; }
+
+/* ── Image options ──────────────────────────────────────────── */
+.site-image-cover img { width: 100%; object-fit: cover; }
+.site-image-round img { border-radius: 9999px; }
+.site-image-square img { border-radius: 0; }
+
+/* Card image as a round portrait (team) */
+.site-card-media-round { width: 7rem; height: 7rem; margin: 1.75rem auto 0; border-radius: 9999px; object-fit: cover; box-shadow: 0 0 0 4px var(--site-surface), 0 0 0 5px var(--site-border); }
+.site-card-media-contain { object-fit: contain; background: var(--site-bg-soft); padding: 1rem; }
+
+/* ── Quote with photo ───────────────────────────────────────── */
+.site-quote-person { display: flex; align-items: center; gap: 0.75rem; }
+.site-quote-avatar { width: 2.75rem; height: 2.75rem; flex: none; border-radius: 9999px; object-fit: cover; box-shadow: 0 0 0 3px var(--site-surface-raised), 0 0 0 4px var(--site-border); }
+
+/* ── Pricing table ──────────────────────────────────────────── */
+.site-pricing { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); align-items: stretch; }
+.site-plan { position: relative; display: flex; flex-direction: column; gap: 1.25rem; padding: 2rem 1.75rem; overflow: visible; }
+.site-plan-name { font-size: 1.125rem; font-weight: 650; color: var(--site-heading); }
+.site-plan-price { display: flex; align-items: baseline; gap: 0.375rem; }
+.site-plan-amount { font-size: 2.75rem; line-height: 1; font-weight: 800; letter-spacing: -0.03em; color: var(--site-heading); }
+.site-plan-period { color: var(--site-subtle); }
+.site-plan-text { color: var(--site-muted); }
+.site-plan-features { display: grid; gap: 0.625rem; flex: 1; }
+.site-plan-features li { display: flex; gap: 0.625rem; color: var(--site-text); }
+.site-plan-features svg { flex: none; width: 1.25rem; height: 1.25rem; color: var(--primary-text); }
+.site-plan .site-btn { width: 100%; }
+.site-plan-featured { border-color: transparent; box-shadow: 0 0 0 2px var(--primary), var(--site-shadow-lg); }
+.site-plan-badge { position: absolute; top: -0.75rem; left: 50%; transform: translateX(-50%); padding: 0.25rem 0.75rem; border-radius: 9999px; background-image: var(--site-gradient); color: #fff; font-size: 0.75rem; font-weight: 700; white-space: nowrap; }
+
+/* ── Logo strip ─────────────────────────────────────────────── */
+.site-logos { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 2rem 3rem; }
+.site-logos img { height: 3rem; width: auto; max-width: 11rem; object-fit: contain; }
+.site-logos-muted img { filter: grayscale(1); opacity: 0.8; transition: filter 0.2s ease, opacity 0.2s ease; }
+.site-logos-muted a:hover img, .site-logos-muted img:hover { filter: none; opacity: 1; }
+.dark .site-logos-muted img { filter: grayscale(1) invert(1) brightness(1.4); }
+
+/* ── Logo for dark mode (theme setting) ───────────────────────── */
+.site-logo-dark { display: none; }
+.dark .site-logo-dark { display: block; }
+.dark .site-logo-light.has-dark { display: none; }
+
+/* ── Error pages (resources/views/errors) ───────────────────── */
+.site-error { display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 2rem 1rem; text-align: center; }
+.site-error-logo img { height: 2rem; width: auto; }
+.site-error-main { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; width: 100%; max-width: 40rem; padding-block: 3rem; }
+.site-error-code { font-size: clamp(6rem, 4rem + 10vw, 11rem); line-height: 0.9; font-weight: 800; letter-spacing: -0.05em; }
+.site-error-title { font-size: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem); font-weight: 800; letter-spacing: -0.03em; color: var(--site-heading); }
+.site-error-text { max-width: 32rem; font-size: 1.125rem; line-height: 1.7; color: var(--site-muted); }
+.site-error-search { width: 100%; margin-top: 0.5rem; }
+.site-error .site-hero-actions { justify-content: center; }
+.site-error-foot { font-size: 0.875rem; color: var(--site-subtle); }
+
+/* ── Anchors: jump targets not hidden under the fixed header ─── */
+.page-blocks [id] { scroll-margin-top: 5.5rem; }
+
+/* ── Columns: vertically centered ─────────────────────────────── */
+.site-columns-center { align-items: center; }
+
+/* ── Image without border ───────────────────────────────────── */
+.site-image-plain img { border: 0; box-shadow: none; }
+
+/* ══ Theme settings (attributes on <body>) ══════════════════════ */
+
+/* Header: glass (default) · solid · not sticky */
+[data-header='solid'] .site-header { background: var(--site-bg); backdrop-filter: none; -webkit-backdrop-filter: none; }
+[data-header='static'] .site-header { position: relative; background: var(--site-bg); backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+/* Light footer */
+[data-footer='light'] .site-footer {
+    --site-footer-bg: var(--site-bg-soft);
+    --site-footer-text: var(--site-muted);
+    --site-footer-heading: var(--site-heading);
+    --site-footer-link: var(--site-text);
+    --site-footer-link-hover: var(--primary-text);
+    --site-footer-line: var(--site-border);
+    border-top: 1px solid var(--site-border);
+}
+
+/* Corners: sharp · round (default) · very round */
+[data-radius='sharp'] { --site-radius: 0.375rem; --site-radius-lg: 0.5rem; --site-btn-radius: 0.375rem; }
+[data-radius='round'] { --site-radius: 1.25rem; --site-radius-lg: 2rem; --site-btn-radius: 9999px; }
+
+/* Font: Inter (default) · system font · serif for headings */
+[data-font='system'] { font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; }
+/* Outfit: geometric, headings light (300) and slightly letter-spaced */
+[data-font='outfit'] { font-family: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif; }
+[data-font='outfit'] :is(h1, h2, .site-page-title, .site-hero-title) { font-weight: 300; letter-spacing: -0.005em; }
+[data-font='outfit'] :is(h3, h4, .site-card-title) { font-weight: 400; }
+[data-font='serif'] :is(h1, h2, h3, .site-page-title, .site-hero-title, .block-heading, .site-card-title) {
+    font-family: ui-serif, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+    letter-spacing: -0.01em;
+}
+
+/* Glow off */
+[data-glow='0'] .site-canvas::before { display: none; }
+
+/* Background in dark mode: night blue (default) · black · slate */
+.dark [data-dark='black'] {
+    --site-bg: #000000;
+    --site-bg-soft: #0a0a0c;
+    --site-surface-raised: #141418;
+    --site-header-bg: rgb(0 0 0 / 0.72);
+    --site-footer-bg: #000000;
+}
+
+.dark [data-dark='slate'] {
+    --site-bg: #0f172a;
+    --site-bg-soft: #131d33;
+    --site-surface-raised: #1b2640;
+    --site-header-bg: rgb(15 23 42 / 0.78);
+    --site-footer-bg: #0b1222;
+}

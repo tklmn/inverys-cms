@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <rect width="96" height="96" rx="8" fill="#EFF6FF" />
+  <path d="M64,32H32c-2.2,0-4,1.8-4,4v24c0,2.2,1.8,4,4,4h32c2.2,0,4-1.8,4-4V36C68,33.8,66.2,32,64,32z M64,60H32V36h32V60z" fill="#2563EB" />
+  <path d="M40,46h16v2H40V46z" fill="#2563EB" />
+  <path d="M40,42h16v2H40V42z" fill="#2563EB" />
+  <path d="M40,50h16v2H40V50z" fill="#2563EB" />
+  <path d="M40,54h10v2H40V54z" fill="#2563EB" />
+  <text x="35" y="66" font-family="Arial" font-size="9" font-weight="bold" fill="#2563EB">DOC</text>
+</svg>

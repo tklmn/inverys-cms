@@ -1,0 +1,12 @@
+{
+    "slug": "form-builder",
+    "name": "Form Builder",
+    "version": "1.0.0",
+    "screenshot": "assets/screenshot.png",
+    "description": "Dynamic form creation with drag-and-drop field editor, submissions inbox, CSV export, and email notifications.",
+    "author": "Tom Kilimann",
+    "provider": "Plugins\\FormBuilder\\FormBuilderServiceProvider",
+    "settings_route": "backend.forms.settings",
+    "search_keywords": "form-builder::forms.search_keywords",
+    "is_system": true
+}

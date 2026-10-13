@@ -1,0 +1,20 @@
+{
+    "name": "inverys/mail-providers",
+    "description": "Extended mail transport support: SMTP, Microsoft 365 (Graph, OAuth2) and Google / Gmail (API, OAuth2).",
+    "type": "inverys-plugin",
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        { "name": "Tom Kilimann", "email": "tkilimann@icloud.com" }
+    ],
+    "extra": {
+        "inverys": {
+            "slug": "mail-providers"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugins\\MailProviders\\": "src/"
+        }
+    }
+}
