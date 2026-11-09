@@ -16,19 +16,19 @@
     "devDependencies": {
         "@tailwindcss/forms": "^0.5.2",
         "@tailwindcss/typography": "^0.5.20",
-        "@tailwindcss/vite": "^4.3.3",
-        "autoprefixer": "^10.4.2",
+        "@tailwindcss/vite": "^4.3.4",
+        "autoprefixer": "^10.6.2",
         "axe-core": "^4.14.0",
-        "axios": "^1.8.2",
+        "axios": "^1.21.0",
         "bootstrap-icons": "^1.13.2",
         "concurrently": "^10.0.6",
-        "laravel-vite-plugin": "^3.2.0",
-        "lucide-static": "^1.57.0",
-        "playwright": "^1.64.1",
-        "postcss": "^8.5.30",
+        "laravel-vite-plugin": "^3.2.1",
+        "lucide-static": "^1.69.0",
+        "playwright": "^1.65.0",
+        "postcss": "^8.5.32",
         "tailwindcss": "^4.3.3",
-        "tinymce-i18n": "26.9.28",
-        "vite": "^8.3.4"
+        "tinymce-i18n": "26.11.2",
+        "vite": "^8.3.6"
     },
     "dependencies": {
         "@codemirror/lang-css": "^6.3.1",
@@ -46,7 +46,7 @@
         "codemirror": "^6.0.2",
         "glightbox": "^3.3.1",
         "sortablejs": "^1.15.7",
-        "tinymce": "^8.10.0"
+        "tinymce": "^8.10.1"
     },
     "overrides": {
         "shell-quote": "^1.12.0",
